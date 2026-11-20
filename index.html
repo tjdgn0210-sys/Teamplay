@@ -170,15 +170,19 @@
   /* ---------- 서비스 목록 ---------- */
   .services { border-top: 1px solid var(--line); }
   .svc {
-    display: grid; grid-template-columns: 5fr 4fr 3fr; gap: 40px; align-items: baseline;
+    display: grid; grid-template-columns: 5fr 7fr; grid-template-rows: auto 1fr; gap: 14px 40px; align-items: start;
     padding: clamp(36px, 4vw, 56px) 0; border-bottom: 1px solid var(--line);
   }
   .svc h3 { font-size: clamp(30px, 3.3vw, 50px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; transition: color .25s ease; }
   .svc:hover h3, .svc:focus-within h3 { color: var(--gold); }
-  .svc p { color: var(--ink-2); }
-  .svc ul { display: grid; gap: 6px; }
-  .svc ul a { display: inline-block; padding: 4px 0; color: var(--ink); border-bottom: 1px solid transparent; }
-  .svc ul a:hover { color: var(--gold); border-color: var(--gold); }
+  .svc h3, .svc p { grid-column: 1; }
+  .svc p { color: var(--ink-2); max-width: 26em; }
+  .svc ul { grid-column: 2; grid-row: 1 / span 2; display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; align-content: start; margin-top: 6px; }
+  .svc ul li { border-top: 1px solid var(--line); }
+  .svc ul a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 4px 15px 0; color: var(--ink); transition: color .2s ease; }
+  .svc ul a::after { content: ""; flex: none; width: 7px; height: 7px; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); opacity: .4; transition: transform .25s ease, opacity .25s ease; }
+  .svc ul a:hover { color: var(--gold); }
+  .svc ul a:hover::after { opacity: 1; transform: translateX(4px) rotate(45deg); }
 
   /* ---------- 절차 ---------- */
   .process { background: var(--bg-raise); }
@@ -230,9 +234,9 @@
     background: radial-gradient(50% 80% at 100% 0%, rgba(138,106,74,.38), transparent 70%), var(--bg);
     border-top: 1px solid var(--line);
   }
-  .closing .wrap { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; }
+  .closing .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; align-items: last baseline; gap: 24px 56px; }
   .closing h2 { font-size: clamp(40px, 5.6vw, 96px); font-weight: 900; line-height: 1.12; letter-spacing: -0.045em; }
-  .closing p { margin-top: 20px; color: var(--ink-2); max-width: 32em; }
+  .closing p { justify-self: end; max-width: 22em; color: var(--ink-2); font-size: 18px; }
 
   /* ---------- 푸터 ---------- */
   .site-footer { background: var(--bg-deep); color: var(--ink-3); font-size: 15px; padding: 80px 0 48px; }
@@ -276,10 +280,12 @@
     .site-header { grid-template-columns: 1fr auto; }
     .allmenu-util { display: flex; }
     .sec-head { grid-template-columns: 1fr; }
-    .svc { grid-template-columns: 1fr 1fr; }
-    .svc h3 { grid-column: 1 / -1; }
+    .svc { grid-template-columns: 1fr; grid-template-rows: none; }
+    .svc ul { grid-column: 1; grid-row: auto; margin-top: 14px; }
     .steps { grid-template-columns: repeat(2, 1fr); row-gap: 56px; }
     .news-grid { grid-template-columns: 1fr; }
+    .closing .wrap { grid-template-columns: 1fr; }
+    .closing p { justify-self: start; }
     .ft-top { grid-template-columns: 1fr; }
   }
   @media (max-width: 720px) {
@@ -297,6 +303,7 @@
     .hero-actions .btn { flex: 1 1 100%; }
     .shade { background: linear-gradient(to top, rgba(8,7,5,.92) 0%, rgba(8,7,5,.55) 45%, transparent 75%); }
     .svc { grid-template-columns: 1fr; gap: 16px; }
+    .svc ul { grid-template-columns: 1fr; margin-top: 8px; }
     .steps { grid-template-columns: 1fr; row-gap: 48px; }
     .notice a { grid-template-columns: 1fr; gap: 4px; }
     .notice .cat { display: none; }
@@ -516,12 +523,13 @@
   .cert .sample { margin-top: 18px; text-align: center; font-size: 13px; color: #8A6A4A; }
 
   /* 홈 추가 요소 */
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); margin-top: clamp(56px, 6vw, 88px); }
+  .stats-band { display: grid; grid-template-columns: 4fr 1fr; border-top: 1px solid var(--ink); margin-top: clamp(48px, 5vw, 72px); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; }
   .stats div { padding: 24px 20px 0 0; }
   .stats dt { color: var(--ink-3); font-size: 15px; }
   .stats dd { margin: 8px 0 0; font-size: clamp(36px, 3.6vw, 56px); font-weight: 900; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
   .stats dd.gold { color: var(--gold); }
-  .stats-cap { margin-top: 14px; font-size: 14px; color: var(--ink-3); }
+  .stats-cap { padding-top: 26px; font-size: 14px; line-height: 1.6; color: var(--ink-3); text-wrap: balance; }
   .quick { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); margin-top: clamp(64px, 7vw, 104px); }
   .quick a { padding: 26px 20px 26px 0; border-bottom: 1px solid var(--line); font-size: 18px; font-weight: 700; display: flex; justify-content: space-between; gap: 8px; }
   .quick a + a { padding-left: 20px; border-left: 1px solid var(--line); }
@@ -537,6 +545,8 @@
     .lnb li a { flex: none; white-space: nowrap; border: 1px solid #3A2F27; border-radius: 99px; padding: 8px 16px; font-size: 15px; }
     .lnb li a[aria-current="page"] { border-color: var(--gold); }
     .quick { grid-template-columns: 1fr 1fr; }
+    .stats-band { grid-template-columns: 1fr; }
+    .stats-cap { padding-top: 18px; }
     .quick a:nth-child(3) { padding-left: 0; border-left: 0; }
   }
   @media (max-width: 720px) {
@@ -545,7 +555,7 @@
     .facts dt { padding-bottom: 0; border-bottom: 0; }
     .row2 { grid-template-columns: 1fr; }
     .choice + .choice { padding-left: 0; border-left: 0; }
-    .stats { grid-template-columns: 1fr 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; row-gap: 8px; }
     .bsearch input[type="search"] { flex: 1 1 140px; width: auto; min-width: 0; }
     .bsearch { width: 100%; }
     .wizard { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: 1fr 1fr; }
@@ -598,12 +608,9 @@
 
   /* 신청현황 숫자: 줄 높이를 숫자 크기에 맞춤 */
   .stats dd { line-height: 1.15; }
-  .stats-cap { margin-top: 24px; }
   /* 바로가기: 제목과 보조 문구의 기준선 */
   .quick a { align-items: baseline; }
   .quick small { margin-top: 0; text-align: right; }
-  /* 마무리: 큰 제목에 견줄 만한 버튼 크기 */
-  .closing .btn { min-height: 64px; padding: 0 36px; font-size: 18px; }
 
   /* 넓은 본문(로그인·회원가입 등): 페이지 제목과 왼쪽 선을 맞춤 */
   .page-body.wide { max-width: var(--max); }
@@ -766,14 +773,16 @@
         <li class="step"><div class="step-num" aria-hidden="true">4</div><h3>위원회 검토</h3><p>심의위원회가 최종 제출 자료를 질적으로 검토합니다.</p></li>
         <li class="step"><div class="step-num" aria-hidden="true">5</div><h3>결과안내</h3><p>완료 또는 미완료 결과를 문자나 이메일로 알려드립니다.</p></li>
       </ol>
+      <div class="stats-band">
+        <dl class="stats" aria-label="예술활동증명 신청현황">
+          <div><dt>신청완료</dt><dd>69</dd></div>
+          <div><dt>접수확인</dt><dd>0</dd></div>
+          <div><dt>행정검토중</dt><dd class="gold">992</dd></div>
+          <div><dt>위원회 검토중</dt><dd>2,410</dd></div>
+        </dl>
+        <p class="stats-cap">예술활동증명 신청현황 · 2026.11.20 기준 · 단위 건</p>
+      </div>
       <p class="note"><strong>보완 요청은 한 번뿐입니다.</strong> 요청을 받으면 7일 안에 자료를 보완하세요. 기한 연장이나 추가 보완은 할 수 없습니다.</p>
-      <dl class="stats" aria-label="예술활동증명 신청현황">
-        <div><dt>신청완료</dt><dd>69</dd></div>
-        <div><dt>접수확인</dt><dd>0</dd></div>
-        <div><dt>행정검토중</dt><dd class="gold">992</dd></div>
-        <div><dt>위원회 검토중</dt><dd>2,410</dd></div>
-      </dl>
-      <p class="stats-cap">예술활동증명 신청현황 · 2026.11.20 기준 · 단위 건</p>
     </div>
   </section>
 
@@ -806,11 +815,8 @@
   <!-- 마무리 -->
   <section class="section closing" aria-labelledby="close-title">
     <div class="wrap">
-      <div>
-        <h2 id="close-title"><span class="art">예술</span>을 이어가는 일,<br>증명에서 시작합니다</h2>
-        <p>예술활동증명을 완료해야 재단의 복지사업에 신청할 수 있습니다.</p>
-      </div>
-      <a class="btn btn-gold" href="#/cert/apply">예술활동증명 신청</a>
+      <h2 id="close-title"><span class="art">예술</span>을 이어가는 일,<br>증명에서 시작합니다</h2>
+      <p>예술활동증명을 완료해야 재단의 복지사업에 신청할 수 있습니다.</p>
     </div>
   </section>
 </div>
@@ -832,9 +838,9 @@
       <div>
         <ul class="policy">
           <li><a href="#/guide/about">예술인경력정보시스템 소개</a></li>
-          <li><a href="https://www.kawfartist.kr/views/cms/hkor/ug/ug06.jsp" target="_blank" rel="noopener">이용약관</a></li>
+          <li><a href="#/guide/terms">이용약관</a></li>
           <li><a class="privacy" href="http://www.kawf.kr/utility/sub02.do" target="_blank" rel="noopener">개인정보처리방침</a></li>
-          <li><a href="https://www.kawfartist.kr/views/cms/hkor/ug/ug05.jsp" target="_blank" rel="noopener">이메일무단수집거부</a></li>
+          <li><a href="#/guide/email">이메일무단수집거부</a></li>
           <li><a href="http://www.kawf.kr/intro/sub05.do" target="_blank" rel="noopener">찾아오시는 길</a></li>
         </ul>
         <address class="addr">
@@ -1452,7 +1458,7 @@ var Hero = (function () {
     { id: 'rights', title: '권익보호', items: [
       { id: 'legal', title: '법률상담·컨설팅' },
       { id: 'psy', title: '예술인 심리상담', tabs: [['', '심리상담 안내'], ['centers', '심리상담 지정기관 안내']] },
-      { id: 'sinmungo', title: '예술인 신문고' },
+      { id: 'sinmungo', title: '예술인 신문고', tabs: [['', '예술인 신문고 안내'], ['contract', '서면계약 위반신고 안내']] },
       { id: 'harass', title: '성폭력 피해지원' },
       { id: 'contract', title: '표준계약서' },
       { id: 'union', title: '예술인 조합' }
@@ -1475,7 +1481,11 @@ var Hero = (function () {
     { id: 'guide', title: '이용안내', hidden: true, items: [
       { id: 'about', title: '예술인경력정보시스템 소개' },
       { id: 'first', title: '처음 오셨나요?' },
-      { id: 'sitemap', title: '사이트맵' }
+      { id: 'sitemap', title: '사이트맵' },
+      { title: '개인정보 처리방침', ext: 'http://www.kawf.kr/utility/sub02.do' },
+      { id: 'email', title: '이메일무단수집거부' },
+      { id: 'terms', title: '이용약관' },
+      { title: '찾아오시는 길', ext: 'http://www.kawf.kr/intro/sub05.do' }
     ] }
   ];
   function findSec(id) { for (var i = 0; i < SITE.length; i++) if (SITE[i].id === id) return SITE[i]; return null; }
@@ -1762,7 +1772,8 @@ var Hero = (function () {
       '<h2 class="h">자료 안내</h2><ul class="linklist">' +
       '<li>' + extA('https://micc.hkpalette.com/TYP?key=4ydU2LueIL942W%2F19po5bA%3D%3D', '자료준비 예시 (분야별 제출자료 예시)') + '</li>' +
       '<li><a href="#/cert/guide/easy">동영상 가이드</a></li>' +
-      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/cs/cs01002_.jsp', '회원가입 방법 · 예술활동증명 신청 방법 매뉴얼 (원문 페이지)') + '</li></ul>' +
+      '<li>' + extA(fileUrl(1, 36, 1), '회원가입 방법 매뉴얼 내려받기') + '</li>' +
+      '<li>' + extA(fileUrl(1, 36, 2), '예술활동증명 신청 방법 매뉴얼 내려받기') + '</li></ul>' +
       '<h2 class="h">온라인 신청이 어렵다면</h2><dl class="facts">' +
       '<dt>전화 문의</dt><dd>한국예술인복지재단 02-3668-0200</dd>' +
       '<dt>방문 예약</dt><dd>방문예약 상담창구 02-3668-0301. 미리 예약하고 방문하면 더 빠르고 편하게 처리할 수 있습니다. ' + extA('http://www.kawf.kr/reservation/reserv01_info.do', '방문예약 안내') + '</dd>' +
@@ -1796,7 +1807,7 @@ var Hero = (function () {
       '<p class="callout"><strong>중복 수혜에 주의하세요.</strong> 2026년 예술로(路) 사업이나 K-ART 청년 창작자 지원사업에 선정되면 이 사업에 중복 선정될 수 없습니다. 정부·지자체·광역재단의 다른 사업(예: 경기도 예술인 기회소득)도 중복 수혜가 제한될 수 있으니 신청 전에 해당 기관에 확인하세요. 지원금을 받은 뒤에는 원칙적으로 선정을 취소할 수 없습니다.</p>' +
       '<h2 class="h">공통 제출 서류</h2><ul class="dots"><li>지원신청 확약 동의서</li><li>개인정보 처리 동의서</li><li>부정수급·오지급 반납 확약 동의서</li><li>성명·주민등록번호 변경 확인서</li><li>선정이력 확인서</li></ul>' +
       '<p class="callout muted">기존 신진예술인 예술활동준비금지원사업은 ‘청년예술인 예술활동적립계좌’ 사업으로 바뀔 예정입니다. 시행 시기는 공고를 확인하세요.</p>' +
-      '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/ws/ws01.jsp', '예술활동준비금 신청하기', 'btn btn-gold') + '<a class="btn btn-line" href="#/notice/list">공고 확인</a></div>';
+      '<div class="actions">' + extA('http://www.kawfartist.net/', '예술활동준비금 신청하기', 'btn btn-gold') + '<a class="btn btn-line" href="#/notice/list">공고 확인</a></div>';
   };
   P['welfare/insurance/'] = function () {
     return '<p class="lede">예술활동도 일입니다. 계약에 따라 활동하다 다치거나 사고를 당한 경우를 보장하는 산재보험이며, 보험료 일부를 국가가 지원합니다.</p>' +
@@ -1819,8 +1830,12 @@ var Hero = (function () {
       '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/ws/ws02/ws02_01_04.jsp', '설명회 신청') + '</li></ul>' +
       '<div class="actions">' + extA('https://www.kawfartist.kr/common/download.do?fid=bbs&bbs_cd_n=1&bbs_seq_n=10&file_seq_n=1', '신청서 내려받기', 'btn btn-gold') + '<a class="btn btn-line" href="#/cert/apply">예술활동증명 신청하기</a></div>';
   };
-  P['welfare/pension/'] = function () {
-    return boardTable({ rows: PENSION_NOTICES.map(function (r) { return { title: r[0], date: r[1], views: r[2] }; }), url: PENSION_URL, label: '예술인국민연금보험료지원 공지사항', pinned: true });
+  P['welfare/pension/'] = function (q) {
+    if (q.view != null && PENSION_NOTICES[q.view]) {
+      var n = PENSION_NOTICES[q.view];
+      return postView({ kind: '예술인국민연금보험료지원 공지', title: n[0], date: n[1], views: n[2], d: PENSION_DETAIL[q.view], back: '#/welfare/pension', url: PENSION_URL });
+    }
+    return boardTable({ rows: PENSION_NOTICES.map(function (r) { return { title: r[0], date: r[1], views: r[2] }; }), url: PENSION_URL, view: '#/welfare/pension?view=', label: '예술인국민연금보험료지원 공지사항', pinned: true });
   };
   P['welfare/pension/apply'] = function () {
     return '<div class="empty"><h2 class="sh" style="margin-top:0">2026년 신청이 마감되었습니다</h2><p>2026년 예술인 국민연금 보험료 지원사업 신청은 2026년 7월 31일 공지로 마감되었습니다. 다음 사업 공고를 확인하세요.</p>' +
@@ -1868,14 +1883,29 @@ var Hero = (function () {
       '<div class="actions"><a class="btn btn-line" href="#/rights/psy/centers">지정기관 보기</a><a class="btn btn-line" href="#/notice/list">관련 공지</a></div>';
   };
   P['rights/psy/centers'] = function () {
-    var reg = ['서울', '경기', '인천', '강원', '충청', '경상', '전라', '제주'];
     return '<p class="lede">2026년 예술인 심리상담 지정기관은 서울, 경기, 인천, 강원, 충청, 경상, 전라, 제주 권역별로 안내됩니다.</p>' +
-      '<ul class="opts" style="margin:28px 0">' + reg.map(function (r) { return '<li class="opt"><span>' + r + '</span></li>'; }).join('') + '</ul>' +
-      '<p class="callout muted">경인심리건강센터(경기 부천)는 기관 사정으로 상반기 신청을 받지 않습니다. 기관별 이름, 주소, 연락처는 원문 안내에서 확인하세요.</p>' +
-      '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/no/no06/no06_05.jsp', '지정기관 목록 보기', 'btn btn-line') + '</div>';
+      '<div class="chips" role="group" aria-label="권역" style="margin-top:32px"><button type="button" data-reg="전체" aria-pressed="true">전체</button>' +
+      CENTERS.map(function (g) { return '<button type="button" data-reg="' + g[0] + '" aria-pressed="false">' + g[0] + '</button>'; }).join('') + '</div>' +
+      CENTERS.map(function (g, gi) {
+        return '<section data-reg-panel="' + g[0] + '"><h2 class="h"' + (gi === 0 ? ' style="margin-top:0"' : '') + '>' + g[0] + ' <small class="hint" style="font-weight:400">' + g[1].length + '곳</small></h2>' +
+          '<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">' + g[0] + ' 권역 심리상담 지정기관</caption><thead><tr><th>기관</th><th>주소</th><th>전화</th><th>운영 시간 · 비고</th></tr></thead><tbody>' +
+          g[1].map(function (line) {
+            var c = line.split('|');
+            return '<tr><td>' + (c[4] ? extA('https://blog.naver.com/kawf486/' + c[4], esc(c[0])) : esc(c[0])) + '</td><td>' + esc(c[1]) + '</td><td class="num">' + esc(c[2]).replace(', ', '<br>') + '</td><td>' + esc(c[3]) + '</td></tr>';
+          }).join('') + '</tbody></table></div></section>';
+      }).join('') +
+      '<p class="callout muted">경인심리건강센터(경기 부천)는 기관 사정으로 상반기 신청을 받지 않습니다. 운영 시간과 비대면 상담 여부는 방문 전에 기관에 확인하세요.</p>' +
+      '<div class="actions"><a class="btn btn-line" href="#/rights/psy">심리상담 안내</a></div>';
   };
+  function bindCenters() {
+    $$('[data-reg]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        $$('[data-reg]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        $$('[data-reg-panel]').forEach(function (p) { p.hidden = b.dataset.reg !== '전체' && p.dataset.regPanel !== b.dataset.reg; });
+      });
+    });
+  }
   P['rights/sinmungo/'] = function () {
-    var base = 'https://www.kawfartist.kr';
     return '<p class="lede">예술인의 예술 표현의 자유와 노동자로서의 권리를 보호하기 위한 신고·상담 창구입니다.</p>' +
       '<h2 class="h">이용 대상</h2><p>「예술인의 지위와 권리의 보장에 관한 법률」 제2조 제10호의 예술인권리침해행위로 피해를 입은 예술인, 예술단체, 예술인조합</p>' +
       '<h2 class="h">신고할 수 있는 권리침해행위</h2><ol class="flow">' +
@@ -1886,13 +1916,31 @@ var Hero = (function () {
       '<tr><td>심의·의결</td><td>예술인권리보장위원회</td><td>신고사건 심의, 구제조치 요청 및 종결 의결, 시정명령 요청, 분쟁조정</td></tr>' +
       '<tr><td>구제 및 사후지원</td><td>문화체육관광부</td><td>구제조치, 시정권고, 시정명령, 재정지원 중단, 불이익조치 금지</td></tr></tbody></table></div>' +
       '<h2 class="h">신청하기</h2><ul class="linklist">' +
-      '<li>' + extA(base + '/hkor/no/no05/no05_02/consultUser/list.do?menuCate=cu999', '권리침해행위 상담') + '</li>' +
-      '<li>' + extA(base + '/hkor/no/no05/no05_03/artReportUser/write.do', '권리침해행위 신고하기') + '</li>' +
-      '<li>' + extA(base + '/views/cms/hkor/no/no05/no05_04.jsp', '서면계약 위반신고 안내') + '</li>' +
-      '<li>' + extA(base + '/hkor/no/no05/no05_05/consultUser/list.do?menuCate=cu909', '서면계약 상담') + '</li>' +
-      '<li>' + extA(base + '/hkor/no/no05/no05_07/artWriteReportUser/write.do', '서면계약 위반신고') + '</li></ul>' +
+      '<li>' + extA(SMG + 'lawsInfri/list.do', '권리침해행위 상담') + '</li>' +
+      '<li>' + extA(SMG + 'artInfri/list.do', '권리침해행위 신고하기') + '</li>' +
+      '<li><a href="#/rights/sinmungo/contract">서면계약 위반신고 안내</a></li>' +
+      '<li>' + extA(SMG + 'lawsInfri/list.do', '서면계약 상담') + '</li>' +
+      '<li>' + extA(SMG + 'writeContractViolate/list.do', '서면계약 위반신고') + '</li></ul>' +
       '<div class="actions">' + extA('https://sinmungo.kawf.kr/user/intro/lawsInfri/list.do', '권리침해행위 상담 신청하기', 'btn btn-gold') + extA('https://sinmungo.kawf.kr/user/intro/artInfri/list.do', '권리침해행위 신고하기', 'btn btn-line') + '</div>' +
       '<h2 class="h">문의</h2><dl class="facts"><dt>전화</dt><dd>02-3668-0200</dd><dt>이메일</dt><dd>kawf@kawf.kr</dd></dl>';
+  };
+  P['rights/sinmungo/contract'] = function () {
+    var fines = [['문화예술용역 서면계약을 작성하지 않은 경우', '150만 원', '300만 원', '500만 원'], ['계약서를 보존하지 않은 경우', '100만 원', '200만 원', '300만 원'], ['보고를 하지 않거나 자료를 내지 않은 경우, 거짓으로 낸 경우', '200만 원', '300만 원', '400만 원'], ['시정명령을 따르지 않은 경우', '300만 원', '400만 원', '500만 원']];
+    return '<p class="lede">문화예술용역 계약은 반드시 서면으로 맺어야 합니다. 계약서를 쓰지 않았거나 받지 못해 분쟁이 생겼다면 서면계약 위반 신고창구에 상담하거나 신고할 수 있습니다.</p>' +
+      '<p class="callout">신고와 상담은 <strong>연중 상시</strong> 접수합니다.</p>' +
+      '<h2 class="h">계약서에 꼭 들어가야 할 내용</h2><ol class="dots"><li>계약 금액</li><li>계약 기간과 갱신·변경·해지에 관한 사항</li><li>계약 당사자의 권리와 의무</li><li>업무·과업의 내용, 시간, 장소 등 용역의 범위</li><li>수익 배분에 관한 사항</li><li>분쟁 해결에 관한 사항</li></ol>' +
+      '<ul class="dots" style="margin-top:24px"><li>문화예술기획업자와 예술인은 계약서를 2부 작성해 서명하거나 기명날인한 뒤 한 부씩 나눠 가져야 합니다.</li><li>문화예술기획업자는 계약서를 3년 동안 보존해야 합니다.</li><li>표준계약서를 써도 됩니다.</li></ul>' +
+      '<h2 class="h">위반행위와 과태료</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>위반행위</th><th class="num">1차</th><th class="num">2차</th><th class="num">3차 이상</th></tr></thead><tbody>' +
+      fines.map(function (r) { return '<tr><td>' + r[0] + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td class="num">' + r[3] + '</td></tr>'; }).join('') + '</tbody></table></div>' +
+      '<h2 class="h">사실조사</h2><p>문화체육관광부 장관은 사실관계를 확인하기 위해 보고, 자료 제출, 출석을 요구할 수 있고, 문화예술기획업자는 조사에 성실히 응해야 합니다. 접수와 상담은 한국예술인복지재단 예술인 신문고가 맡습니다.</p>' +
+      '<h2 class="h">근거 법령</h2><dl class="facts">' +
+      '<dt>예술인 복지법 제4조의4</dt><dd>서면계약 체결 의무, 서명·기명날인한 계약서 교부, 시정명령</dd>' +
+      '<dt>제5조의2</dt><dd>계약서 3년 보존 의무</dd>' +
+      '<dt>제6조의4</dt><dd>사실조사를 위한 보고·자료 제출·출석 요구</dd>' +
+      '<dt>제18조 제1항</dt><dd>서면계약 미작성, 계약서 미보존, 보고·자료 제출 위반에 대한 과태료(각 500만 원 이하)</dd>' +
+      '<dt>시행령 제5조 별표 2</dt><dd>위반 횟수별 과태료 금액</dd></dl>' +
+      '<div class="actions">' + extA(SMG + 'lawsInfri/list.do', '서면계약 위반 상담하기', 'btn btn-gold') + extA(SMG + 'writeContractViolate/list.do', '서면계약 위반 신고하기', 'btn btn-line') + '<a class="btn btn-line" href="#/rights/contract">표준계약서 보기</a></div>' +
+      '<h2 class="h">문의</h2><dl class="facts"><dt>담당</dt><dd>한국예술인복지재단 예술인 신문고</dd><dt>전화</dt><dd>02-3668-0200</dd><dt>이메일</dt><dd>kawf@kawf.kr</dd><dt>주소</dt><dd>서울특별시 중구 한강대로 416 서울스퀘어 3층</dd></dl>';
   };
   P['rights/harass/'] = function () {
     return '<p class="lede">성희롱·성폭력 피해로 어려움을 겪는 예술인을 보호하고 지원해, 성평등한 예술 환경을 만듭니다.</p>' +
@@ -1929,10 +1977,11 @@ var Hero = (function () {
     return '<p class="lede">표준계약서는 공정한 계약 문화를 만들고 예술인의 기본 권익을 지키기 위한 표준 양식입니다. 분쟁이 생겼을 때 판단 근거가 됩니다.</p>' +
       '<ul class="dots"><li>무계약·구두계약 관행과 계약 지식 부족을 줄이기 위해 분야별 표준계약서를 개발해 보급합니다.</li><li>표준계약 매뉴얼을 보급하고 계약 관련 컨설팅을 제공합니다.</li></ul>' +
       '<h2 class="h">분야별 표준계약서</h2><div class="acc">' + C.map(function (c) {
-        return '<details><summary>' + c[0] + ' <small>' + c[1] + '</small></summary><div class="a"><ul class="dots">' + c[2].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' + (c[3] ? '<p class="hint" style="margin-top:12px">' + c[3] + '</p>' : '') + '</div></details>';
-      }).join('') + '<details><summary>표준근로계약서 <small>7종 · 2019년 7월 게시</small></summary><div class="a"><p>고용노동부 표준근로계약서 자료로 연결됩니다.</p></div></details></div>' +
-      '<p class="callout muted">계약서 파일(HWP)과 해설 자료(PDF)는 원문 페이지에서 내려받을 수 있습니다. 실제 계약에 쓰기 전에는 원문과 전문가 상담을 확인하세요.</p>' +
-      '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/no/cs02_.jsp', '표준계약서 내려받기', 'btn btn-gold') + '<a class="btn btn-line" href="#/rights/legal">계약 상담하기</a></div>';
+        return '<details><summary>' + c[0] + ' <small>' + c[1] + '</small></summary><div class="a"><ul class="dots">' + c[2].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' + (c[3] ? '<p class="hint" style="margin-top:12px">' + c[3] + '</p>' : '') +
+          '<ul class="linklist" style="margin-top:16px">' + (CONTRACT_FILES[c[0]] || []).map(function (f) { return '<li>' + extA(f[2].indexOf('http') === 0 ? f[2] : fileUrl(1, f[2].split('/')[0], f[2].split('/')[1]), f[0] + ' <small>' + f[1] + '</small>') + '</li>'; }).join('') + '</ul></div></details>';
+      }).join('') + '<details><summary>표준근로계약서 <small>7종 · 2019년 7월 게시</small></summary><div class="a"><p>고용노동부 표준근로계약서 자료로 연결됩니다.</p><ul class="linklist" style="margin-top:16px"><li>' + extA('https://www.moel.go.kr/local/seoul/info/policydata/view.do?bbs_seq=20190700008', '고용노동부 표준근로계약서 <small>외부 누리집</small>') + '</li></ul></div></details></div>' +
+      '<p class="callout muted">계약서 파일(HWP)과 해설 자료(PDF)는 위 분야별 항목을 펼쳐 바로 내려받을 수 있습니다. 실제 계약에 쓰기 전에는 전문가 상담을 확인하세요.</p>' +
+      '<div class="actions"><a class="btn btn-gold" href="#/rights/legal">계약 상담하기</a><a class="btn btn-line" href="#/rights/sinmungo/contract">서면계약 위반신고 안내</a></div>';
   };
   P['rights/union/'] = function () {
     return '<p class="lede">예술인은 직업적 권리를 지키고 높이기 위해 조합을 만들 수 있습니다.</p>' +
@@ -1943,6 +1992,162 @@ var Hero = (function () {
       '<ul class="dots" style="margin-top:24px"><li>기재 사항이 빠지면 최대 3주 이내의 기간을 정해 보완을 요청할 수 있습니다.</li><li>조합이 해산하거나 신고 사항이 바뀌면 대표자는 그 사유가 생긴 날부터 3주 이내에 결성(변경)신고서를 제출해야 합니다.</li></ul>' +
       '<div class="actions">' + extA('https://sinmungo.kawf.kr/user/intro/artCombiIntro/list.do', '예술인조합 결성 신고하기', 'btn btn-gold') + extA('https://www.kawfartist.kr/common/download.do?fid=bbs&bbs_cd_n=1&bbs_seq_n=57&file_seq_n=2', '결성신고서 내려받기 (HWP)', 'btn btn-line') + '</div>';
   };
+
+  /* ======================= 원문에서 옮긴 자료 =======================
+     2026.11.21 원문 확인. 본문은 원문을 간추려 다시 씀. 파일은 원래 서버의 내려받기 주소 */
+  var SMG = 'https://sinmungo.kawf.kr/user/intro/';
+  function fileUrl(cd, seq, f) { return 'https://www.kawfartist.kr/common/download.do?fid=bbs&bbs_cd_n=' + cd + '&bbs_seq_n=' + seq + '&file_seq_n=' + f; }
+  function viewUrl(path, cd, seq) { return 'https://www.kawfartist.kr/hkor/' + path + '/bbs/bbsView.do?bbs_seq_n=' + seq + '&bbs_cd_n=' + cd + '&currentPage=0&search_key_n=&search_val_v=&cate_n=&dept_v='; }
+  function nd(seq, title, body, files) { return { src: viewUrl('not/not1', 2, seq), title: title, body: body, files: (files || []).map(function (f) { return [f[0], fileUrl(2, seq, f[1])]; }) }; }
+  function pd(seq, body, files, more) { return { src: viewUrl('ws/ws06/ws06_03', 7, seq), body: body, files: (files || []).map(function (f) { return [f[0], fileUrl(7, seq, f[1])]; }).concat(more || []) }; }
+  var NOTICE_DETAIL = [
+    nd(2296, '[안내] 2026년 개인 심리상담 지원 신청접수 마감 안내 (8월 31일 월요일 17시)', ['올해 예술인 심리상담 지원사업 예산이 일찍 소진되어 2026년 개인 심리상담 지원 신청 접수를 마감합니다.', '마감 일시는 2026년 8월 31일(월) 17시입니다.']),
+    nd(2295, '', ['예술활동 중에 겪는 정서적 어려움을 예방하기 위해 2026년 개인 심리상담에 참여할 예술인을 모집합니다.', '대상은 신청일 기준으로 예술활동증명이 유효한 예술인(신진예술인 포함) 가운데 심리적·정신적 어려움을 겪는 예술인입니다. 마지막 상담일로부터 1년이 지나지 않은 기존 참여자와, 예술활동준비금지원 또는 예술로 사업에서 참여 제한을 통보받은 예술인은 제외합니다.', '신청 기간은 2026년 2월 24일부터 10월 30일까지이며 예산이 소진되면 일찍 마감합니다. 상담은 2026년 12월 31일까지 대면 또는 비대면으로 최대 12회, 심리검사와 함께 지원합니다.', '예술인경력정보시스템의 권익보호 > 예술인 심리상담에서 신청합니다. 1차 신청 뒤 받는 2차 확인 문자에 7일 안에 회신해야 상담기관과 연결됩니다.', '문의: 권리보장팀 02-3668-0264'],
+      [['[공고문] 2026년 개인 심리상담 신청 안내 (PDF)', 2], ['[붙임] 2026년 예술인 심리상담 지정기관 목록 (PDF)', 4], ['[공고문] 2026년 개인 심리상담 신청 안내 (HWP)', 5], ['[붙임] 2026년 예술인 심리상담 지정기관 목록 (HWP)', 6]]),
+    nd(2294, '', ['지자체와 공공기관의 예술인 지원사업에서 예술활동증명 확인서를 쓰는 일이 크게 늘어, 2026년 1월 신청이 10,757건으로 지난해 1월(3,393건)의 3배를 넘었습니다.', '이에 따라 2026년 1월 12일(월) 신청분부터는 분야별 최소 실적 기준(일반 3편 또는 5편 이상, 신진예술인 1편 이상)에 못 미치거나 필수자료가 부족하면 보완 요청 없이 미완료로 처리합니다. 미완료된 신청은 언제든 다시 신청할 수 있습니다.', '전화·방문 민원이 급증해 예술활동증명 상담 창구를 온라인으로 일원화했습니다. 문의는 1:1 문의를 이용하세요.']),
+    nd(2293, '', ['심의를 더 빨리 진행하기 위해 2026년 1월 21일(수)부터 자료보완 기한을 보완 요청일로부터 14일에서 7일로 줄였습니다.', '기한 안에 보완을 마치지 않으면 신청이 자동으로 미완료 처리됩니다.', '문의: 02-3668-0200']),
+    nd(2291, '', ['국립중앙도서관의 2026년 웹콘텐츠(웹툰·웹소설) UCI 발급 안내에 따라 예술활동증명 문학분야의 웹소설 필수자료가 바뀌었습니다.', '바뀐 자료의 구체적인 내용은 첨부 이미지에서 확인하세요.'], [['웹소설 필수자료 변경 (JPG)', 1]]),
+    nd(2290, '[안내] 예술활동증명 신청 시스템 정기 점검 안내(2025. 12. 17. ~ 2026. 1. 12.)', ['정기 점검으로 2025년 12월 17일(수) 10시부터 2026년 1월 12일(월) 10시까지 예술활동증명 신청시스템 운영을 멈춥니다.', '이 기간에는 신규 신청과 재신청을 할 수 없고, 자료 보완과 결과 확인만 할 수 있습니다.', '문의: 02-3668-0200']),
+    nd(2288, '', ['위기에 놓인 예술인의 신호를 일찍 알아차리고 전문기관으로 연결하는 방법을 배우는 자살예방 생명지킴이 교육입니다. 동료를 돕고 싶은 예술인과, 예술인을 자주 만나는 문화예술 단체·기관 종사자가 대상입니다.', '1회차(8월 21일)는 마감되었고, 2회차는 2025년 9월 5일(금) 14:00~16:00에 줌(ZOOM) 실시간 비대면으로 열립니다. 신청은 9월 2일(화) 24:00까지, 회차마다 선착순 70명입니다. 청각장애인을 위한 문자통역을 제공할 예정입니다.', '수료증을 받으려면 자살예방교육센터에서 수강신청까지 마쳐야 합니다.', '문의: 권리보장팀 02-3668-0264, 0269 / counseling@kawf.kr'], [['(붙임) 2025 자살예방 생명지킴이 교육 신청 안내 (PDF)', 1]]),
+    nd(2287, '[안내] 개인 심리상담 지원 신청접수 마감 안내 (마감일시: 8.13.(수) 17시)', ['2025년 예술인 심리상담 지원사업 예산이 일찍 소진되어 개인 심리상담 지원 신청 접수를 마감합니다.', '마감 일시는 2025년 8월 13일(수) 17시입니다.']),
+    nd(2286, '', ['예술인의 마음 건강을 돌보기 위해 2025년 개인 심리상담 참여자를 모집합니다. 예술활동증명을 완료하고 심리적·정신적 어려움을 겪는 예술인이 대상이며, 기존 참여자는 상담이 끝나고 1년이 지나야 다시 신청할 수 있습니다.', '신청 기간은 2025년 2월 21일 14시부터 10월 31일까지이고 예산이 소진되면 일찍 마감합니다. 대면 또는 비대면 상담 최대 12회와 심리검사 비용을 지원합니다.', '문의: 권리보장팀 02-3668-0264, 0269'],
+      [['[붙임] 2025년 예술인 심리상담 지정기관 목록 (HWP)', 1], ['[붙임] 2025년 예술인 심리상담 지정기관 목록 (PDF)', 2], ['[붙임] 2025년 예술인 심리상담 지정기관 목록 1 (JPG)', 3], ['[붙임] 2025년 예술인 심리상담 지정기관 목록 2 (JPG)', 4]]),
+    nd(2285, '[안내] 예술인경력정보시스템 예술활동증명 신청시스템 정기점검 안내(’24.12.30.~’25.1.13.)', ['정기 점검으로 2024년 12월 30일(월) 오전 10시부터 2025년 1월 13일(월) 오전 10시까지 예술활동증명 신청 접속을 멈춥니다.', '이 기간에는 신규 신청과 재신청이 잠시 중단됩니다.', '문의: 02-3668-0200'])
+  ];
+  var PENSION_DETAIL = [
+    pd(33, ['예산이 모두 소진되어 2026년 예술인 국민연금 보험료 지원사업의 신청·접수를 2026년 7월 31일(금) 17시에 일찍 마감했습니다.', '이 사업은 2027년 상반기에 다시 추진할 예정입니다.', '문의: 사회보험팀 02-3668-0200']),
+    pd(32, ['2025년 예술인 국민연금 보험료 지원사업은 예산 소진으로 신청 접수를 일찍 마감했습니다.', '2026년 상반기에 다시 추진할 예정입니다.', '문의: 사회보험팀 02-3668-0200']),
+    pd(29, ['예술인의 사회보장 안전망을 넓히고 공정한 계약 문화를 퍼뜨리기 위한 사업입니다(한국예술인복지재단 공고 2026-17호).', '신청 마감은 2026년 8월 31일(월) 오후 11시 59분이며, 예산이 소진되면 일찍 마감할 수 있습니다.', '지원 대상, 지원 비율과 한도 같은 세부 내용은 첨부된 공고문에서 확인하세요.'], [['[공고문] 2026년 예술인 국민연금 보험료 지원사업 (PDF)', 1]]),
+    pd(27, ['표준계약을 맺은 적은 없지만 국민연금 보험료 지원을 신청하려는 프리랜서 예술인을 위한 온라인 교육 수강 안내입니다.', '온라인 표준계약 교육을 들으면 국민연금 보험료 3개월분을 지원받을 수 있습니다. 지역가입자와 임의가입자만 해당합니다.'], [['온라인 예술인 표준계약 관련 교육 안내 - 프리랜서 예술인용 (PDF)', 1]], [['온라인 교육 누리집 (edu-sinmungo.kawf.kr)', 'https://edu-sinmungo.kawf.kr/']]),
+    pd(26, ['2026년 예술인 국민연금 보험료 지원사업에 관해 자주 묻는 질문과 답을 모은 자료입니다. 신청하기 전에 첨부 파일을 확인하세요.', '문의: 사회보험팀 02-3668-0200'], [['[FAQ] 2026년 예술인 국민연금 보험료 지원 - 자주 묻는 질문 (PDF)', 1]]),
+    pd(24, ['예술인경력정보시스템에서 국민연금 보험료 지원을 신청하는 방법을 담은 매뉴얼입니다.', '신청 중 시스템 오류가 생기면 1:1 문의의 ‘사이트 이용문의’에, 사업에 관한 질문은 ‘국민연금 보험료 지원’ 항목에 남겨 주세요.', '문의: 사회보험팀 02-3668-0200'], [['[사업신청매뉴얼] 2026년 예술인 국민연금 보험료 지원 (PDF)', 1]]),
+    pd(23, ['사업 신청에 필요한 예술활동증명 신청 방법과 제출 서류 발급 절차를 안내하는 자료입니다. 자세한 내용은 첨부 파일에서 확인하세요.'], [['[서류발급가이드] 2026년 예술인 국민연금 보험료 지원 (PDF)', 1]])
+  ];
+  function postView(o) {
+    var d = o.d || {}, files = d.files || [];
+    return '<article><p class="hint">' + esc(o.kind) + ' · ' + o.date + ' · 조회 ' + o.views.toLocaleString('ko-KR') + (files.length ? ' · 첨부 ' + files.length + '개' : '') + '</p>' +
+      '<h2 class="h" style="margin-top:12px">' + esc(d.title || o.title) + '</h2>' +
+      (d.body || []).map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
+      (files.length ? '<h3 class="sh">첨부파일</h3><ul class="linklist">' + files.map(function (f) { return '<li>' + extA(f[1], esc(f[0])) + '</li>'; }).join('') + '</ul>' : '') +
+      '<div class="callout muted">원문 공지를 간추린 내용입니다. 정확한 문구는 원문에서 확인하세요.</div>' +
+      '<div class="actions"><a class="btn btn-gold" href="' + o.back + '">목록</a>' + extA(d.src || o.url, '원문 공지 보기', 'btn btn-line') + '</div></article>';
+  }
+  // 표준계약서 파일: [제목, 형식, '게시글번호/파일번호' 또는 전체 주소]
+  var CONTRACT_FILES = {
+    '미술': [['미술분야 표준계약서 12종', 'HWP', '37/3'], ['2022 알기 쉬운 미술 분야 표준계약서 가이드북', 'PDF', '37/4']],
+    '공예': [['공예분야 표준계약서 5종', 'HWP', '49/2']],
+    '공연예술': [['공연예술분야 표준계약서 5종', 'HWP', '51/3'], ['기술지원 표준근로계약서·표준용역계약서 해설서', 'HWP', '51/2'], ['공연예술 표준대관계약서 해설서', 'PDF', '51/4'], ['동영상강좌 「공연예술 표준계약의 이해」', '외부 누리집', 'https://kawf.edukocca.or.kr/']],
+    '만화': [['만화분야 표준계약서 8종', 'HWP', '61/1'], ['만화분야 표준계약서 해설집 (2025.6.)', 'PDF', '52/3'], ['만화분야 표준계약서 해설집 (2019.12.)', 'PDF', '52/2']],
+    '애니메이션': [['애니메이션분야 표준계약서 4종', 'HWP', '30/5']],
+    '대중문화': [['대중문화예술인 방송·영상 출연표준계약서 3종', 'HWP', '63/1'], ['대중문화예술인(가수·연기자) 표준전속계약서 2종', 'HWP', '53/3'], ['대중문화예술분야 연습생 표준계약서', 'HWP', '64/1'], ['청소년 대중문화예술인(또는 연습생) 표준 부속합의서', 'HWP', '64/2'], ['알기쉬운 방송분야 표준계약서 리플릿', 'PDF', '53/1']],
+    '방송': [['방송분야 표준계약서 6종', 'HWP', '43/4'], ['알기쉬운 방송분야 표준계약서 리플릿', 'PDF', '53/1'], ['방송분야 표준계약서 사용지침', 'PDF', '43/5']],
+    '영화': [['영화산업 근로표준계약서', 'HWP', '60/2'], ['영화산업 근로표준계약서 해설집', 'HWP', '60/3'], ['영화 시나리오 표준계약서 4종', 'HWP', '54/3'], ['시나리오 표준계약서 주요 조항 해설', 'HWP', '54/4'], ['영화 상영 표준계약서 2종', 'HWP', '54/5'], ['영화 투자 표준계약서', 'HWP', '54/2'], ['영화산업 표준보수지침', 'HWP', '64/3']],
+    '출판': [['출판분야 표준계약서 10종', 'HWP', '55/1'], ['출판분야 표준계약서 활용 가이드 리플릿', 'PDF', '55/3'], ['출판분야 표준계약서 해설', 'PDF', '55/2'], ['동영상강좌 「출판계약, 이것만은 꼭 확인하자!」', '외부 누리집', 'http://www.kawf.kr/notice/sub07View.do?selIdx=2722']],
+    '저작재산권': [['저작재산권분야 표준계약서 4종', 'HWP', '56/1']]
+  };
+  // 심리상담 지정기관: 이름|주소|전화|운영 시간·비고|소개 글 번호
+  var CENTERS = [
+    ['서울', [
+      '광화문 마음공간 심리상담센터|서울 종로구 사직로8길 34 경희궁의 아침 3단지 오피스텔 211호|02-720-7127|화~금 11:00~20:00, 토 10:00~14:00, 일·공휴일 휴무|221858373365',
+      '심리상담센터 보듬과아우름|서울 양천구 오목로345 슬로우스퀘어 318호|02-2642-3375, 010-5672-3375|월~금 10:00~20:00, 토 10:00~17:00, 일·공휴일 휴무, 비대면(유선·화상)|223040397067',
+      '그랑조행복찾기심리상담센터|서울 종로구 동숭길 64 401호|010-6335-0391|월~일·공휴일 10:00~20:00, 비대면(유선·화상)|221858375604',
+      '다움심리상담센터|서울 영등포구 양평로16 대정프라자 603호|02-2672-1377, 010-8721-9707|월~금 09:00~21:00, 토 09:00~18:00, 일·공휴일 휴무, 비대면(화상)|221858377766',
+      '담은심리상담센터|서울 강서구 마곡서로 152 두산 더 랜드타워 A동 603호|0507-1347-2766|월~금 10:00~20:00, 토 10:00~15:00, 일·공휴일 휴무, 비대면(유선·화상)|223360729743',
+      '더마음공간심리상담센터|서울 영등포구 여의나루로 71 동화빌딩 418호|010-9946-1379|월~금 09:00~19:00, 토 09:00~14:00, 일·공휴일 휴무, 비대면(유선·화상)|223360737833',
+      '도상금임상심리센터|서울 서초구 서운로 11 서초디오빌 819호|02-578-2283|화~금 10:00~20:00, 토 10:00~16:00, 월·일·공휴일 휴무, 면담 후 사정에 따라 비대면 가능|223360874633',
+      '마음산책심리상담센터|서울 중구 퇴계로32길22 1층|02-821-5953|월~금 10:00~21:00, 토·일·공휴일 휴무, 비대면(화상)|221858378959',
+      'MK내마음클리닉|서울 강남구 언주로120 인스토피아 7층 8호|010-4321-4894|월~금 11:00~19:00, 토 11:00~15:00, 일·공휴일 휴무, 비대면(화상)|223040390825',
+      '새봄심리상담연구소|서울 마포구 독막로 295 삼부골든타워 1023호|010-3565-7294|월·화·수·금 10:00~20:00, 토 10:00~16:00, 목·일·공휴일 휴무, 비대면(화상)|221858384222',
+      '심리상담센터 마음안아주기|서울 종로구 삼일대로 461 101동 827호 (경운동, 운현궁sk허브)|010-2765-2512|화·목 10:00~20:00, 수·금·토 10:00~19:00, 월·일·공휴일 휴무, 비대면(화상)|221858374505',
+      '이화심리 상담센터|서울 도봉구 노해로65길 17(창동) 중앙빌딩 4층 402호|02-999-5232|월~금 11:00~20:00, 토 13:00~18:00, 일·공휴일 휴무, 비대면(유선·화상)|221858387157',
+      '심리상담센터 함께|서울 강남구 선릉로 431, 808호 (역삼동, SK허브오피스텔)|02-6014-1143|월·수·금 10:00~17:00, 화·목 16:00~21:00, 토 10:00~13:00, 일·공휴일 휴무, 비대면(유선·화상)|223360885961',
+      '심리상담연구소 함께|서울 금천구 두산로 70 현대지식산업센터 A동 408호|02-2104-6833|수~금 09:00~21:00, 토 09:00~15:00, 월·화·일·공휴일 휴무, 비대면(화상)|221858386110',
+      '심리상담소 턴|서울 강남구 선릉로 431 (역삼동, SK허브오피스텔) 1110호|02-512-2680|월~일 11:00~20:00, 비대면(화상)|221858382899',
+      '연세 선 아동청소년심리센터|서울 서대문구 신촌로35길 10 402엠동 상가 211호|0570-1388-6676|월~토 10:00~20:00, 일·공휴일 휴무, 비대면(화상)|223360892204',
+      '연세 센트럴 심리센터|서울 용산구 서빙고로 17, 제몰동 C몰 2층 94호 (한강로3가, 센트럴 파크)|0506-123-0509|월~금 11:00~20:00, 토·일·공휴일 휴무, 사정에 따라 면담 후 비대면 가능|224190129280',
+      '일과사랑 임상심리상담연구소|서울 강남구 언주로30길 27 우성리빙텔 509호|02-6259-5975|월·화·수·금 10:00~21:00, 목·토·일·공휴일 휴무, 사정에 따라 면담 후 비대면(유선) 가능|223040392494',
+      '일랑심리상담센터|서울 마포구 백범로 202 마포KCC웰츠타워 426호|010-2830-3272|월·수·금 10:00~21:00, 토 10:00~16:00, 목·일·공휴일 휴무, 비대면(화상)|223040394382',
+      '임선영 심리상담연구소|서울 양천구 목동동로 293 현대41타워 3102호|02-6671-9090|화~금 10:00~20:00, 토 10:00~17:00, 월·일·공휴일 휴무, 비대면(화상)|221858388150',
+      '한들심리상담센터|서울 금천구 범안로17길 23 우정오피스텔 110호|010-7508-3837|월·수·목·금·토·공휴일 09:30~20:00, 화·일 휴무, 비대면(화상)|221858401594'
+    ]],
+    ['경기', [
+      '경인심리건강센터|경기 부천시 중동로 248번길 52 네이버시티빌딩 2층 201-1호|032-321-2841|기관 사정으로 상반기 신청 불가|',
+      '나온심리상담연구소|경기 안양시 안양판교로 20 신한데뷰오피스텔 1304호|031-422-3571|월~금 09:00~20:00, 토 10:00~15:00, 일·공휴일 휴무, 비대면(화상)|223040331633',
+      '로뎀심리학습상담센터|경기 고양시 일산동구 중앙로1275번길 38-10 우림로데오스위트 514호|031-904-4569|월~금 10:00~19:00, 토 10:30~16:30(2·4주), 일·공휴일 휴무, 비대면(유선·화상)|221858391185',
+      '민현정심리상담연구소|경기 안산시 상록구 충장로 232 804호 (본오동, 대우마이홈)|010-5537-4189|월·수~금 09:00~20:00, 토 10:00~17:00, 화·공휴일 휴무, 비대면(유선·화상)|223360881067',
+      '바른ABA심리상담센터|경기 남양주시 다산중앙로145번길 11, 8층 801호|0507-1412-4339|월~금 10:00~19:00, 토 10:00~14:00, 일·공휴일 휴무, 비대면(유선·화상)|224190132919',
+      '세움심리상담센터|경기 수원시 영통구 권선로882번길 65-30, 2층|031-202-3812|월 13:00~19:00, 수~목 10:00~21:00, 금 10:00~17:00, 토 10:00~18:00, 화·일·공휴일 휴무, 비대면(화상)|221858393496',
+      '심리상담센터 폭신폭신|경기 고양시 일산서구 주엽로 134, 시대프라자 305호|0507-1324-0728|월~토 10:30~20:00, 일·공휴일 휴무, 사정에 따라 면담 후 비대면(화상) 가능|221858392523',
+      '심리클리닉 아이진|경기 성남시 분당구 서현로 170, 풍림아이원플러스 T동 909호|010-4667-2327|월~금 10:00~19:00, 토 10:00~16:00, 일·공휴일 휴무, 비대면(유선·화상), 3.11. 이전 예정|221858394312',
+      '심리상담소 여지|경기 파주시 와석순환로515번길 61 송림메디컬프라자 8층 810호|010-8312-3714|월~금 09:00~19:30, 토 10:00~18:00, 일·공휴일 휴무, 비대면(유선·화상)|221858395196',
+      '이든샘가족아동청소년상담소|경기 안양시 동안구 시민대로 230 평촌아크로타워 A동 1211호|031-478-9958|월~금 10:00~19:00, 토 10:00~17:00, 일·공휴일 휴무, 비대면(유선·화상)|221858396306',
+      '해인심리상담센터|경기 과천시 관문로 92 101동 1512호|0507-1375-4536|월~금 11:00~19:00, 토 10:00~14:00, 일·공휴일 휴무, 비대면(화상)|224190135461'
+    ]],
+    ['인천', [
+      '나무솔심리상담센터|인천 서구 청라에메랄드로102번길 8 우성메디피아 709호|032-576-0030|월~금 10:00~20:00, 토 10:00~16:00, 일·공휴일 휴무, 비대면(유선·화상)|221858398006',
+      '심클심리상담연구소|인천 남동구 구월남로 163, 토성프라자 6층 601호|0507-1482-0916|화~금 10:00~21:00, 토 10:00~18:00, 월·일·공휴일 휴무|223040333329'
+    ]],
+    ['강원', [
+      '심리상담센터 아낌|강원 춘천시 소양강로 10 춘천B&I지식산업센터 615호|033-263-1155|월~토 09:00~20:00, 일·공휴일 휴무, 비대면(화상)|221858399283',
+      '춘천임상심리연구소|강원특별자치도 춘천시 춘천로 34-1, 4층 (퇴계동)|033-255-1533|월~금 10:00~19:00, 토 10:00~17:00, 일·공휴일 휴무, 비대면(화상)|221858399998',
+      '이음과닿음심리상담센터|강원 강릉시 강릉대로 122 3층|010-8673-0189|월~일·공휴일 10:00~21:00, 비대면(유선·화상)|224190138058'
+    ]],
+    ['충청', [
+      '그로잉마인드 심리상담센터|세종시 대평로 87 5층 504호 (대평동, 태양빌딩)|010-9600-9520|월~토 10:00~20:00, 일 13:00~18:00, 공휴일 휴무|221858403328',
+      '박상규심리상담연구소|세종시 한누리대로 223 리베라아이누리 2층 204호|044-868-1002|월~금 09:00~20:00, 토·일·공휴일은 상담자 상황에 따라 조정, 비대면(화상)|223040400825',
+      '손애리심리연구소|대전 서구 둔산로 133 현대아이텔 418호 (둔산동)|010-4174-0060|월~금 10:00~19:00, 토 10:00~16:00, 일·공휴일 휴무, 비대면(화상)|221858400729',
+      '자유ON심리상담센터|대전 서구 둔산중로 40 둔산더리치빌 302호|042-485-4279|월~금 10:00~19:00, 토·일·공휴일 휴무, 비대면(유선·화상)|223040399111',
+      '휴심리상담소|충북 청주시 흥덕구 가로수로 1348, 아주빌딩 502호|010-6462-4650|화~토 09:00~19:00, 월·일·공휴일 휴무, 비대면(유선)|221858402447'
+    ]],
+    ['경상', [
+      '마음그루 심리상담센터|부산 금정구 중앙대로 2008 예일빌딩 504호|010-5560-2632|월~일·공휴일 09:00~17:30, 비대면(유선·화상)|221858406251',
+      '마음꽃심리상담연구소|경남 창원시 마산합포구 동서동2길 41 기전시티텔 804호|010-2581-0901|화~금 10:00~18:00, 토·일 14:00~18:00, 월·공휴일 휴무, 비대면(화상)|223040330044',
+      '라온혜윰힐링센터|경북 경산시 용성면 곡신길 11-5, 라온혜윰힐링타운 내|053-853-7579|화~일 10:00~19:00, 월·공휴일 휴무, 비대면(유선·화상)|223040328440',
+      '톡톡심리상담센터|경남 진주시 진주대로 857 축산농협 2층|055-753-3033|월~토 09:00~19:00, 일·공휴일 휴무|223360896954'
+    ]],
+    ['전라', [
+      '사단법인 심리건강연구소|광주 동구 남문로 734 103동 206호|062-512-0039|월~금 09:00~18:00, 토 09:00~13:00, 일·공휴일 휴무, 비대면(유선·화상)|221858409910',
+      '최영미마음상담센터|광주 북구 동문대로 111 이상클리닉빌딩 4층 (우산동)|062-263-7942|월~금 09:30~18:00, 토 09:30~12:30, 일·공휴일 휴무, 비대면(유선)|221858410925'
+    ]],
+    ['제주', [
+      '내마음의 펭귄|제주시 연화중길 12-9 301호|070-4213-8080|월~금 09:30~19:00, 토 09:30~16:00, 일·공휴일 휴무, 비대면(화상)|221858411895'
+    ]]
+  ];
+  // 이용약관: [장, [[조, 제목, 간추린 내용]]]
+  var TERMS = [
+    ['제1장 총칙', [
+      ['제1조', '목적', '경력정보시스템 서비스의 이용 조건과 절차, 권리·의무와 책임에 관한 사항을 정합니다.'],
+      ['제2조', '약관의 명시, 효력 및 개정', '약관은 초기 화면에 게시합니다. 약관을 고칠 때는 적용일 7일 전부터 공지하며, 회원이 7일이 지나도록 거부 의사를 밝히지 않고 계속 이용하면 바뀐 약관에 동의한 것으로 봅니다.'],
+      ['제3조', '용어의 정의', '이용자, 이용계약, 가입, 회원, 회원정보, 이용자번호(ID), 비밀번호, 탈퇴(해지), 관리기관, 사용기관 등 약관에 쓰는 말의 뜻을 정합니다.'],
+      ['제4조', '약관 외 준칙', '약관에 없는 사항은 관련 법령과 상관습을 따릅니다.']
+    ]],
+    ['제2장 이용계약의 체결', [
+      ['제5조', '이용계약의 성립', '이용자가 약관에 동의하고 이용을 신청하면, 사용기관이 이를 승낙할 때 계약이 성립합니다.'],
+      ['제6조', '회원가입 및 탈퇴(해지)', '가입 양식을 작성해 마치면 가입됩니다. 다른 사람의 명의를 쓰는 등 정해진 사유가 있으면 사용기관이 가입을 취소할 수 있습니다. 지원신청이나 보조금 수혜 실적이 있는 회원의 최소 정보는 마지막 날부터 5년 동안 보관합니다.'],
+      ['제7조', '이용자 ID 부여 및 변경', 'ID는 원칙적으로 바꿀 수 없으며, 바꾸려면 해지한 뒤 다시 가입해야 합니다. ID와 비밀번호를 관리할 책임은 이용자에게 있고, 등록한 내용이 바뀌면 바로 알려야 합니다.'],
+      ['제8조', '회원 정보 수집·사용·관리·보호에 대한 동의', '회원정보는 개인정보 보호법과 사용기관의 개인정보 처리방침에 따라 보호합니다. 관리기관, 업무협약 기관과 공유할 수 있지만 이용자의 승낙 없이 제3자에게 제공하지 않습니다.'],
+      ['제9조', '이용자의 정보 보안', '이용자는 ID와 비밀번호를 주의해서 관리하고, 부정 사용을 발견하면 바로 신고하며, 이용을 마치면 로그아웃해야 합니다. 외부 링크로 연결된 제3자 서비스에는 이 처리방침이 적용되지 않습니다.']
+    ]],
+    ['제3장 서비스의 제공 및 이용', [
+      ['제10조', '서비스 이용시간', '연중무휴, 하루 24시간 제공하는 것이 원칙입니다. 정기점검 등은 예외입니다.'],
+      ['제11조', '서비스의 제공 및 변경', '재단이 직접 개발했거나 다른 기관과 협의해 마련한 서비스를 제공하며, 서비스가 바뀌면 이용자에게 공지합니다.'],
+      ['제12조', '서비스의 중지 및 공지', '긴급한 상황에는 미리 알리지 않고 서비스를 멈출 수 있습니다. 점검은 7일 전에, 서비스를 완전히 끝낼 때는 90일 전에 공지합니다.'],
+      ['제13조', '정보 제공 및 홍보물 게재', '누리집, 전자우편, 우편으로 정보를 제공할 수 있고 공익성 홍보물을 실을 수 있습니다.'],
+      ['제14조', '게시물의 관리·운영', '게시물에 대한 권리는 이용자에게 있습니다. 다만 약관에 어긋나거나 다른 사람의 권리를 침해한다고 판단하면 미리 알리지 않고 삭제하거나 옮기거나 등록을 거부할 수 있습니다.'],
+      ['제15조', '서비스 이용제한', '허위 정보가 확인되거나 그렇게 의심할 합리적인 이유가 있으면 이용을 일부 또는 전부 멈출 수 있고, 약관을 어기면 접속을 막을 수 있습니다.']
+    ]],
+    ['제4장 계약 당사자의 의무와 책임', [
+      ['제16조', '사용기관의 의무', '법령을 지키고 안정적으로 서비스를 제공하도록 노력하며, 승낙 없이 회원정보를 누설하거나 배포하지 않습니다. 이용자의 책임으로 생긴 장애는 책임지지 않습니다.'],
+      ['제17조', '회원의 의무', '가입 정보를 정확히 적고 최신으로 유지하며, ID와 비밀번호를 다른 사람에게 주지 않아야 합니다. 사전 승낙 없는 영리 행위, 정보 무단 복제, ID 도용, 해킹, 스팸 전송 등을 금지합니다.']
+    ]],
+    ['제5장 손해배상 및 기타사항', [
+      ['제18조', '경력정보시스템의 소유권', '서비스에 관한 지식재산권은 재단에, 사용기관의 로고와 사업공고는 사용기관에 있습니다. 이용자는 승인 없이 수정, 판매, 배포할 수 없습니다.'],
+      ['제19조', '양도', '이용 권한 같은 계약상 지위를 넘기려면 사용기관에 미리 서면으로 알려야 하며, 승인되면 ID나 비밀번호가 바뀔 수 있습니다.'],
+      ['제20조', '손해배상', '사용기관이 고의나 중대한 과실로 회원에게 손해를 끼치면 배상합니다. 회원이 약관을 어겨 손해를 끼치면 회원이 배상합니다. 무료 서비스는 고의나 중대한 과실이 없으면 배상하지 않습니다.'],
+      ['제21조', '면책조항', '천재지변, 통신사업자의 서비스 중지, 미리 공지한 점검 등으로 생긴 손해는 고의나 중대한 과실이 없으면 책임지지 않습니다. 이용자 컴퓨터의 오류, 게시된 정보의 신뢰도, 기대한 이익, 다른 이용자 때문에 생긴 피해도 같습니다.'],
+      ['제22조', '관할법원', '소송은 제소할 때 이용자의 주소지를 관할하는 지방법원에 제기하고, 주소가 없으면 거소지 법원을 따릅니다. 대한민국 법을 적용합니다.']
+    ]]
+  ];
 
   /* ======================= 알림 ======================= */
   function boardTable(o) {
@@ -1959,10 +2164,7 @@ var Hero = (function () {
   P['notice/list/'] = function (q) {
     if (q.view != null && NOTICES[q.view]) {
       var n = NOTICES[q.view];
-      return '<article><p class="hint">공지사항 · ' + n[1] + ' · 조회 ' + n[2].toLocaleString('ko-KR') + (n[3] ? ' · 첨부 ' + n[3] + '개' : '') + '</p>' +
-        '<h2 class="h" style="margin-top:12px">' + esc(n[0]) + '</h2>' +
-        '<div class="callout muted">본문과 첨부파일은 원문 공지사항에서 확인할 수 있습니다.</div>' +
-        '<div class="actions">' + extA(NOTICE_URL, '원문 공지 보기', 'btn btn-gold') + '<a class="btn btn-line" href="#/notice/list">목록</a></div></article>';
+      return postView({ kind: '공지사항', title: n[0], date: n[1], views: n[2], d: NOTICE_DETAIL[q.view], back: '#/notice/list', url: NOTICE_URL });
     }
     return boardTable({ rows: NOTICES.map(function (r) { return { title: r[0], date: r[1], views: r[2], files: r[3] }; }), url: NOTICE_URL, view: '#/notice/list?view=', files: true, label: '공지사항', total: NOTICE_TOTAL, pinned: true });
   };
@@ -2052,7 +2254,7 @@ var Hero = (function () {
         '<label class="opt"><input type="radio" name="jtype" value="adult"' + (join.type === 'adult' ? ' checked' : '') + '><span>개인 회원가입</span></label>' +
         '<label class="opt"><input type="radio" name="jtype" value="child"' + (join.type === 'child' ? ' checked' : '') + '><span>만 14세 미만 회원가입<small>법정대리인 동의 필요</small></span></label></div></div>' +
         '<div class="field"><label class="check"><input type="checkbox" id="agAll"><span><b>전체 동의</b></span></label>' +
-        '<label class="check"><input type="checkbox" class="ag" required><span>이용약관 동의 <span class="req">(필수)</span> · ' + extA('https://www.kawfartist.kr/views/cms/hkor/ug/ug06.jsp', '전문 보기', 'btn-text') + '</span></label>' +
+        '<label class="check"><input type="checkbox" class="ag" required><span>이용약관 동의 <span class="req">(필수)</span> · ' + '<a class="btn-text" href="#/guide/terms" target="_blank">전문 보기<span class="sr-only">(새 창)</span></a>' + '</span></label>' +
         '<label class="check"><input type="checkbox" class="ag" required><span>개인정보 수집·이용 동의 <span class="req">(필수)</span> · ' + extA('http://www.kawf.kr/utility/sub02.do', '개인정보처리방침', 'btn-text') + '</span></label></div>' +
         '<p class="err" id="jerr" role="alert"></p><div class="actions"><button class="btn btn-gold" type="submit">다음</button><a class="btn btn-line" href="#/">취소</a></div></form>';
     } else if (s === 2) {
@@ -2430,6 +2632,20 @@ var Hero = (function () {
       '<div class="actions"><a class="btn btn-gold" href="#/join">회원가입</a><a class="btn btn-line" href="#/login">로그인</a></div>' +
       '<h2 class="h">이런 걸 할 수 있어요</h2><ul class="linklist">' + C.map(function (c) { return '<li><a href="' + c[2] + '"><span><b>' + c[0] + '</b><br><span class="hint">' + c[1] + '</span></span></a></li>'; }).join('') + '</ul>';
   };
+  P['guide/email/'] = function () {
+    return '<p class="lede">이 누리집에 실린 이메일 주소를 전자우편 수집 프로그램이나 그 밖의 기술적 장치로 무단 수집하는 행위를 거부합니다.</p>' +
+      '<p class="callout"><strong>무단 수집은 처벌 대상입니다.</strong> 이를 어기면 정보통신망법에 따라 형사 처벌을 받을 수 있습니다.</p>' +
+      '<h2 class="h">문의</h2><dl class="facts"><dt>운영</dt><dd>한국예술인복지재단</dd><dt>전화</dt><dd>02-3668-0200</dd><dt>이메일</dt><dd>kawf@kawf.kr</dd></dl>';
+  };
+  P['guide/terms/'] = function () {
+    return '<p class="lede">예술인경력정보시스템 서비스를 이용하는 조건과 절차, 이용자와 운영 기관의 권리·의무·책임을 정한 약관입니다.</p>' +
+      '<p class="callout muted">조문별 핵심을 읽기 쉽게 간추린 내용입니다. 법적 효력이 있는 정확한 문구는 약관 원문에서 확인하세요.</p>' +
+      TERMS.map(function (ch) {
+        return '<h2 class="h">' + ch[0] + '</h2><dl class="facts">' + ch[1].map(function (a) { return '<dt>' + a[0] + '<br><span style="color:var(--ink);font-weight:700">' + a[1] + '</span></dt><dd>' + a[2] + '</dd>'; }).join('') + '</dl>';
+      }).join('') +
+      '<h2 class="h">부칙</h2><dl class="facts"><dt>시행일</dt><dd>이 약관은 2014년 1월 1일부터 시행합니다.</dd></dl>' +
+      '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/ug/ug06.jsp', '약관 원문 보기', 'btn btn-line') + '<a class="btn btn-line" href="#/guide/email">이메일무단수집거부</a></div>';
+  };
   P['guide/sitemap/'] = function () {
     return '<div class="grid2" style="gap:48px">' + SITE.map(function (s) {
       return '<div><h2 class="sh" style="margin-top:0;padding-bottom:12px;border-bottom:1px solid var(--ink)">' + esc(s.title) + '</h2><ul class="linklist">' + s.items.map(function (it) { return '<li>' + itemLink(s, it) + '</li>'; }).join('') + '</ul></div>';
@@ -2528,6 +2744,7 @@ var Hero = (function () {
     if (key === 'cert/faq/' || key === 'notice/faq/') bindFaq(key === 'cert/faq/' ? '사업신청' : '전체');
     if (key === 'rights/legal/') bindLegal();
     if (key === 'cert/guide/criteria') bindCriteria();
+    if (key === 'rights/psy/centers') bindCenters();
     var bs = $('[data-board]', viewPage);
     if (bs) bs.addEventListener('submit', function (e) {
       e.preventDefault();

@@ -12,7 +12,7 @@
     --bg-raise: #16110D;
     --line: #2B231D;
     --ink: #F2F0EA;
-    --ink-2: #C4C4C4;
+    --ink-2: #CCC6BB;
     --ink-3: #9A9187;
     --gold: #FFE08A;
     --amber: #8A6A4A;
@@ -21,7 +21,7 @@
     --max: 1440px;
   }
   *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; color-scheme: dark; }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
     font-family: var(--font); font-size: 17px; line-height: 1.7;
@@ -38,32 +38,40 @@
   .skip:focus { top: 16px; }
   .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad-x); }
 
-  /* ---------- 헤더 (고정) ---------- */
+  /* ---------- 헤더 (고정) ----------
+     3단 그리드: 로고 | 주 메뉴(화면 정중앙) | 계정·전체메뉴. 모든 요소를 한 기준선에 맞춤 */
   .site-header {
     position: fixed; inset: 0 0 auto 0; z-index: 30;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 var(--pad-x); height: 104px;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 32px;
+    padding: 0 var(--pad-x); height: 96px;
     border-bottom: 1px solid transparent;
     transition: background-color .35s ease, border-color .35s ease, height .35s ease;
   }
   .site-header.solid {
-    height: 80px; background: rgba(14,11,9,.86); border-color: var(--line);
+    height: 72px; background: rgba(14,11,9,.88); border-color: var(--line);
     -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   }
-  .logo { display: inline-flex; flex-direction: column; align-items: center; line-height: 1.15; }
-  .logo b { font-size: clamp(19px, 1.9vw, 27px); font-weight: 800; letter-spacing: -0.02em; }
-  .logo small { font-size: 11px; color: var(--ink-2); letter-spacing: 0.04em; margin-top: 4px; }
-  .gnb { display: flex; gap: clamp(40px, 6vw, 112px); margin-left: auto; margin-right: clamp(40px, 9vw, 200px); }
-  .gnb a { font-size: 16px; color: #E6E2DA; padding: 8px 0; position: relative; }
-  .gnb a::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 1px;
+  .logo { justify-self: start; display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1; }
+  .logo b { font-size: clamp(19px, 1.45vw, 22px); font-weight: 800; letter-spacing: -0.035em; }
+  .logo small { font-size: 10.5px; font-weight: 600; color: var(--ink-3); letter-spacing: 0.06em; }
+  .gnb { display: flex; align-items: center; gap: clamp(28px, 3.4vw, 56px); }
+  .gnb > .gi > a { display: inline-flex; align-items: center; height: 44px; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; color: #E6E2DA; position: relative; transition: color .2s ease; }
+  .gnb > .gi > a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 2px;
     background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
   }
-  .gnb a:hover::after, .gnb a:focus-visible::after { transform: scaleX(1); }
-  .util { display: flex; align-items: center; gap: 22px; font-size: 15px; color: #E6E2DA; }
-  .util a:hover { color: var(--gold); }
-  .menu-btn { width: 44px; height: 44px; display: grid; place-content: center; gap: 7px; margin-left: 18px; }
-  .menu-btn span { display: block; width: 28px; height: 2px; background: var(--ink); }
+  .gnb > .gi > a:hover, .gnb > .gi > a[aria-current="true"] { color: var(--ink); }
+  .gnb > .gi > a:hover::after, .gnb > .gi > a:focus-visible::after, .gnb > .gi > a[aria-current="true"]::after { transform: scaleX(1); }
+  .util { justify-self: end; display: flex; align-items: center; gap: 20px; font-size: 14px; color: var(--ink-2); }
+  .util a:hover { color: var(--ink); }
+  .util .acc { display: inline-flex; align-items: center; height: 36px; }
+  .util .join { padding: 0 16px; border: 1px solid rgba(242,240,234,.35); border-radius: 999px; color: var(--ink); font-weight: 600; transition: border-color .2s ease, color .2s ease; }
+  .util .join:hover { border-color: var(--gold); color: var(--gold); }
+  .util .sep { width: 1px; height: 14px; background: rgba(242,240,234,.22); }
+  .menu-btn { width: 40px; height: 40px; display: grid; place-content: center; gap: 6px; margin-left: 4px; border-radius: 50%; transition: background-color .2s ease; }
+  .menu-btn:hover { background: rgba(242,240,234,.08); }
+  .menu-btn span { display: block; width: 22px; height: 1.5px; background: var(--ink); }
+  .menu-btn span:nth-child(3) { display: none; }
 
   /* ---------- 히어로: 스크롤 고정 장면 ---------- */
   .hero { position: relative; height: 340vh; background: var(--bg); }
@@ -90,7 +98,7 @@
   .hero-title .line { grid-column: 1; white-space: nowrap; }
   .slot { position: relative; display: inline-block; white-space: nowrap; }
   .slot > .rv { position: absolute; left: 0; top: 0; white-space: nowrap; }
-  .slot > .rv { opacity: 0; }
+  .rv .ch { position: relative; opacity: 0; visibility: hidden; }
   .art { color: var(--gold); }
   .life { color: var(--ink-2); }
   /* 인물이 사라진 자리에 나타나는 신청 영역 */
@@ -128,8 +136,7 @@
   .scene-progress { position: absolute; right: var(--pad-x); bottom: calc(clamp(28px, 4.5vh, 64px) + 10px); width: 120px; height: 1px; background: rgba(242,240,234,.25); pointer-events: none; }
   .scene-progress i { position: absolute; inset: 0; background: #FFE08A; transform-origin: 0 50%; transform: scaleX(0); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-  .haze { position: absolute; inset: 0; pointer-events: none; opacity: 0;
-    background: radial-gradient(90% 70% at 70% 55%, rgba(196,142,74,.20), transparent 70%), linear-gradient(100deg, rgba(150,104,52,.10), rgba(196,142,74,.16)); }
+  .haze { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: rgba(190,136,70,.16); }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; min-height: 54px;
     padding: 0 28px; font-size: 16px; font-weight: 700; border-radius: 4px;
@@ -155,21 +162,21 @@
   @keyframes rise { to { opacity: 1; transform: none; } }
 
   /* ---------- 공통 섹션 ---------- */
-  .section { padding: clamp(96px, 13vw, 180px) 0; }
-  .sec-head { display: grid; grid-template-columns: 5fr 7fr; gap: 40px; align-items: end; margin-bottom: clamp(48px, 6vw, 88px); }
+  .section { padding: clamp(88px, 10vw, 148px) 0; }
+  .sec-head { display: grid; grid-template-columns: 5fr 7fr; gap: 40px; align-items: end; align-items: last baseline; margin-bottom: clamp(48px, 6vw, 88px); }
   .sec-title { font-size: clamp(36px, 4.4vw, 68px); font-weight: 900; line-height: 1.15; letter-spacing: -0.035em; }
   .sec-lead { color: var(--ink-2); max-width: 36em; font-size: 18px; }
 
   /* ---------- 서비스 목록 ---------- */
   .services { border-top: 1px solid var(--line); }
   .svc {
-    display: grid; grid-template-columns: 5fr 4fr 3fr; gap: 40px; align-items: start;
+    display: grid; grid-template-columns: 5fr 4fr 3fr; gap: 40px; align-items: baseline;
     padding: clamp(36px, 4vw, 56px) 0; border-bottom: 1px solid var(--line);
   }
-  .svc h3 { font-size: clamp(32px, 3.8vw, 58px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; transition: color .25s ease; }
+  .svc h3 { font-size: clamp(30px, 3.3vw, 50px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; transition: color .25s ease; }
   .svc:hover h3, .svc:focus-within h3 { color: var(--gold); }
-  .svc p { color: var(--ink-2); padding-top: 8px; }
-  .svc ul { padding-top: 6px; display: grid; gap: 6px; }
+  .svc p { color: var(--ink-2); }
+  .svc ul { display: grid; gap: 6px; }
   .svc ul a { display: inline-block; padding: 4px 0; color: var(--ink); border-bottom: 1px solid transparent; }
   .svc ul a:hover { color: var(--gold); border-color: var(--gold); }
 
@@ -181,7 +188,9 @@
     content: ""; position: absolute; top: -5px; left: 0; width: 9px; height: 9px; border-radius: 50%;
     background: var(--gold);
   }
-  .step-num { font-size: clamp(56px, 5vw, 84px); font-weight: 900; line-height: 1; color: #4A3D33; letter-spacing: -0.04em; }
+  .step-num { font-size: clamp(56px, 5vw, 84px); font-weight: 900; line-height: 1; color: #6B573F; letter-spacing: -0.04em;
+    background: linear-gradient(180deg, rgba(255,224,138,.6) 0%, rgba(138,106,74,.3) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .step h3 { margin-top: 20px; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
   .step p { margin-top: 10px; color: var(--ink-2); font-size: 16px; }
   .note {
@@ -263,7 +272,8 @@
 
   /* ---------- 반응형 ---------- */
   @media (max-width: 1100px) {
-    .gnb, .util .acc { display: none; }
+    .gnb, .util .acc, .util .sep { display: none; }
+    .site-header { grid-template-columns: 1fr auto; }
     .allmenu-util { display: flex; }
     .sec-head { grid-template-columns: 1fr; }
     .svc { grid-template-columns: 1fr 1fr; }
@@ -274,8 +284,9 @@
   }
   @media (max-width: 720px) {
     body { font-size: 16px; }
-    .site-header { height: 76px; }
-    .site-header.solid { height: 64px; }
+    .site-header { height: 72px; grid-template-columns: 1fr auto; }
+    .site-header.solid { height: 60px; }
+    .logo b { font-size: 18px; }
     .hero-title { font-size: clamp(38px, 11.5vw, 64px); }
     .hero-cta { position: static; width: auto; margin-top: 22px; }
     .cta-lead { margin-bottom: 16px; }
@@ -309,7 +320,7 @@
   /* 주 메뉴 드롭다운 */
   .gnb .gi { position: relative; }
   .gnb .drop {
-    position: absolute; top: 100%; left: -22px; min-width: 230px; padding: 12px 0; margin-top: 8px;
+    position: absolute; top: 100%; left: -22px; margin-top: 4px !important; min-width: 230px; padding: 12px 0; margin-top: 8px;
     background: rgba(14,11,9,.97); border: 1px solid var(--line); border-radius: 6px;
     opacity: 0; visibility: hidden; transform: translateY(-4px);
     transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
@@ -417,7 +428,7 @@
   .bbar .count b { color: var(--ink); }
   .bsearch { display: flex; gap: 8px; flex-wrap: wrap; }
   .bsearch select { width: auto; min-width: 120px; }
-  .bsearch input { width: 240px; }
+  .bsearch input[type="search"] { width: 240px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
   .chips button { min-height: 40px; padding: 0 18px; border: 1px solid #3A2F27; border-radius: 99px; font-size: 15px; color: var(--ink-2); }
   .chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 700; }
@@ -460,7 +471,7 @@
   .opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
   .opt { position: relative; }
   .opt input { position: absolute; opacity: 0; inset: 0; }
-  .opt span { display: flex; align-items: center; min-height: 48px; padding: 10px 16px; border: 1px solid #3A2F27; border-radius: 4px; font-size: 15px; color: var(--ink-2); cursor: pointer; line-height: 1.4; }
+  .opt > span { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; min-height: 48px; padding: 10px 16px; border: 1px solid #3A2F27; border-radius: 4px; font-size: 15px; color: var(--ink-2); cursor: pointer; line-height: 1.4; }
   .opt input:checked + span { border-color: var(--gold); color: var(--ink); background: rgba(255,224,138,.08); font-weight: 700; }
   .opt input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
   .opts.wide { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
@@ -535,7 +546,7 @@
     .row2 { grid-template-columns: 1fr; }
     .choice + .choice { padding-left: 0; border-left: 0; }
     .stats { grid-template-columns: 1fr 1fr; }
-    .bsearch input { width: 100%; }
+    .bsearch input[type="search"] { flex: 1 1 140px; width: auto; min-width: 0; }
     .bsearch { width: 100%; }
     .wizard { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: 1fr 1fr; }
     .modal-box { padding: 28px 22px; }
@@ -553,6 +564,79 @@
   .allmenu-grid h2 { font-size: clamp(24px, 2.4vw, 36px); margin-bottom: 16px; }
   @media (max-width: 1100px) { .steps.steps5 { grid-template-columns: repeat(2, 1fr); } .allmenu-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 720px) { .steps.steps5 { grid-template-columns: 1fr; } .allmenu-grid { grid-template-columns: 1fr; } }
+
+  /* ======================= 시각 다듬기 =======================
+     구성·내용은 그대로 두고 질감, 정렬, 타이포그래피만 손봄 */
+  :root {
+    /* 히어로 사진의 먼지 질감을 아래 단색 면까지 이어 주는 옅은 그레인 */
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .9 0 0 0 0 .74 .18 0 0 0 -.08'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  body, .process, .site-footer, .allmenu { background-image: var(--grain); }
+  .closing { background: var(--grain), radial-gradient(50% 80% at 100% 0%, rgba(138,106,74,.38), transparent 70%), var(--bg); }
+  .page-head { background: var(--grain), radial-gradient(50% 90% at 100% 0%, rgba(138,106,74,.36), transparent 70%), var(--bg); }
+  ::selection { background: var(--gold); color: #17110D; }
+
+  /* 줄바꿈: 제목은 줄 길이를 고르게, 본문은 한 단어만 남는 마지막 줄을 피함 */
+  h1, h2, h3 { text-wrap: balance; }
+  p, li, dd, summary { text-wrap: pretty; }
+  .notice .t, .faq summary, .acc summary { line-height: 1.5; }
+
+  /* 영문·안내 라벨의 자간 */
+  .logo small { letter-spacing: .14em; }
+  .explore { letter-spacing: .14em; }
+  .scroll-cue span { letter-spacing: .2em; margin-right: -.2em; }
+
+  /* 히어로 아랫단: 사진이 끊기지 않고 본문 배경으로 스며들게 함 (모바일은 기존 음영 유지) */
+  @media (min-width: 721px) {
+    .shade {
+      background:
+        linear-gradient(to top, var(--bg) 0%, rgba(14,11,9,.55) 4%, rgba(14,11,9,.16) 9%, transparent 15%),
+        radial-gradient(70% 60% at 0% 100%, rgba(8,7,5,.72), transparent 70%),
+        radial-gradient(130% 100% at 50% 45%, transparent 55%, rgba(0,0,0,.55));
+    }
+  }
+
+  /* 신청현황 숫자: 줄 높이를 숫자 크기에 맞춤 */
+  .stats dd { line-height: 1.15; }
+  .stats-cap { margin-top: 24px; }
+  /* 바로가기: 제목과 보조 문구의 기준선 */
+  .quick a { align-items: baseline; }
+  .quick small { margin-top: 0; text-align: right; }
+  /* 마무리: 큰 제목에 견줄 만한 버튼 크기 */
+  .closing .btn { min-height: 64px; padding: 0 36px; font-size: 18px; }
+
+  /* 넓은 본문(로그인·회원가입 등): 페이지 제목과 왼쪽 선을 맞춤 */
+  .page-body.wide { max-width: var(--max); }
+  .page-body.wide > .content { max-width: 972px; }
+
+  /* 한 줄에 놓이는 입력칸과 버튼의 높이 */
+  .bsearch select, .bsearch input[type="search"] { min-height: 44px; }
+  .bsearch select { background-position: calc(100% - 22px) 19px, calc(100% - 16px) 19px; }
+  .inline .btn { min-height: 52px; }
+  li.opt > span { cursor: default; }
+  .opt { display: flex; }
+  .opt > span { flex: 1; }
+
+  /* 체크박스: 어두운 화면에서 튀던 흰 기본 상자를 톤에 맞춤 */
+  .check input[type="checkbox"] {
+    -webkit-appearance: none; appearance: none; display: grid; place-content: center;
+    border: 1px solid #5A4A3D; border-radius: 4px; background: #120E0B; cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .check input[type="checkbox"]:hover { border-color: var(--gold); }
+  .check input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
+  .check input[type="checkbox"]:checked::after {
+    content: ""; width: 10px; height: 6px; margin-top: -2px;
+    border-left: 2px solid #17110D; border-bottom: 2px solid #17110D; transform: rotate(-45deg);
+  }
+
+  /* 떠 있는 요소의 깊이감 */
+  .gnb .drop { box-shadow: 0 24px 60px -20px rgba(0,0,0,.85); }
+  .toast { box-shadow: 0 16px 40px -12px rgba(0,0,0,.7); }
+  .modal { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .modal-box { box-shadow: 0 40px 120px -30px rgba(0,0,0,.9); }
+  .cert { color-scheme: light; }
+  @media print { .modal-box { box-shadow: none; } }
 
 </style>
 
@@ -590,7 +674,7 @@
         <div class="hero-copy">
           <h1 class="hero-title" id="hero-title" aria-label="예술은 길고 인생은 짧다">
             <span class="line reveal d1" aria-hidden="true"><span class="art">예술</span>은 길고</span>
-            <span class="line" aria-hidden="true"><span class="slot"><span id="lineLife"><span class="life">인생</span>은 짧다</span><span class="rv" id="lineRecord"><span class="art">기록</span>은 남는다</span></span></span>
+            <span class="line" aria-hidden="true"><span class="slot"><span id="lineLife"><span class="life">인생</span>은 짧다</span><span class="rv" id="lineRecord"><span class="ch art">기</span><span class="ch art">록</span><span class="ch">은</span> <span class="ch">남</span><span class="ch">는</span><span class="ch">다</span></span></span></span>
           </h1>
           <div class="swap reveal d3">
             <p class="lead-a" id="leadA">예술활동증명부터 복지지원, 권익보호까지 예술인의 경력과 권리를 한곳에서 관리하세요.</p>
@@ -781,7 +865,8 @@
 
 <script>
 /* ================= 히어로 장면 =================
-   스크롤하면 인물과 '인생은 짧다'가 금빛 먼지로 흩어지고, 그 먼지가 '기록은 남는다'로 다시 모임 */
+   스크롤하면 '인생은 짧다'가 모래바람이 되어 인물을 뒤덮고, 인물과 함께 오른쪽 화면 밖으로 날아감.
+   그동안 '기록은 남는다'가 한 글자씩 나타나고, 인물이 있던 자리에 신청 영역이 나타남 */
 var Hero = (function () {
   'use strict';
   // 시스템의 '동작 줄이기' 설정과 관계없이 스크롤 연출을 항상 실행
@@ -794,6 +879,7 @@ var Hero = (function () {
   var haze = document.getElementById('haze');
   var lineLife = document.getElementById('lineLife');
   var lineRecord = document.getElementById('lineRecord');
+  var recChars = Array.prototype.slice.call(lineRecord.querySelectorAll('.ch'));
   var leadA = document.getElementById('leadA');
   var cta = document.getElementById('heroCta');
   var heroBody = document.getElementById('heroBody');
@@ -807,12 +893,13 @@ var Hero = (function () {
   var MAN = { l: 2534 / SRC_W, t: 188 / SRC_H, w: 1071 / SRC_W, h: 1599 / SRC_H };
   // 스크롤 진행률(0~1) 타임라인
   var TL = {
-    manA: 0.06, manB: 0.46,      // 인물이 먼지로 흩어짐
-    lifeA: 0.10, lifeB: 0.34,    // '인생은 짧다'가 흩어짐
-    gatherA: 0.36, gatherB: 0.60,// 먼지가 '기록은 남는다' 자리로 모임
-    settleA: 0.70, settleB: 0.84,// 글자가 또렷해짐
+    lifeA: 0.02, lifeB: 0.22,    // '인생은 짧다'가 모래바람으로 부서짐
+    coverA: 0.10, coverB: 0.34,  // 모래가 날아가 인물을 뒤덮음
+    manA: 0.30, manB: 0.58,      // 뒤덮인 인물이 모래와 함께 오른쪽으로 흩어짐
+    clearA: 0.60, clearB: 0.72,  // 남은 모래가 화면 밖으로 걷힘
+    recA: 0.40, recB: 0.66,      // '기록은 남는다'가 한 글자씩 나타남
     leadOutA: 0.08, leadOutB: 0.26,
-    ctaA: 0.22, ctaB: 0.54,      // 인물이 사라지는 동안 그 자리에 신청 영역이 서서히 나타남
+    ctaA: 0.42, ctaB: 0.68,      // 인물이 사라지는 동안 그 자리에 신청 영역이 서서히 나타남
     progEnd: 0.86
   };
 
@@ -915,74 +1002,85 @@ var Hero = (function () {
   ].join('\n');
   var FS_QUAD = [
     'precision mediump float;',
-    'uniform sampler2D uTex; uniform sampler2D uMap; uniform float uT; uniform float uAlpha; varying vec2 vUV;',
+    'uniform sampler2D uTex; uniform sampler2D uMap; uniform float uT; uniform float uAlpha; uniform float uWarm; varying vec2 vUV;',
     'void main(){',
     ' vec4 c = texture2D(uTex, vUV); float m = texture2D(uMap, vUV).r;',
-    ' float vis = smoothstep(uT, uT + 0.006, m);',
-    ' float edge = (1.0 - smoothstep(uT, uT + 0.02, m)) * vis;',
-    ' vec3 col = c.rgb + vec3(1.0, 0.74, 0.38) * edge * 1.3 * c.a;',
+    ' float vis = smoothstep(uT, uT + 0.02, m);',
+    ' float edge = (1.0 - smoothstep(uT, uT + 0.05, m)) * vis;',
+    ' vec3 col = c.rgb + vec3(0.85, 0.62, 0.32) * edge * 0.6 * c.a + vec3(0.5, 0.33, 0.13) * uWarm * c.a;',
     ' gl_FragColor = vec4(col, c.a) * vis * uAlpha; }'
   ].join('\n');
-  // 흩어졌다가 새 글자 자리로 모이는 입자
+  // 모래 입자: 글자 모래는 인물을 덮으러 날아가고, 인물이 흩어질 때 함께 오른쪽 화면 밖으로
   var VS_PART = [
-    'attribute vec2 aStart; attribute float aKind; attribute float aM; attribute vec3 aCol; attribute float aSeed;',
-    'attribute vec2 aTgt; attribute float aTgtCol;',
-    'uniform vec4 uRect; uniform vec2 uView; uniform float uT0; uniform float uT1; uniform float uP;',
-    'uniform vec2 uG; uniform float uSettle; uniform float uExtra; uniform float uTime; uniform float uDpr; uniform float uScale; uniform float uDot; uniform float uManA;',
+    'attribute vec2 aStart; attribute vec2 aCover; attribute float aKind; attribute float aM1; attribute float aM2;',
+    'attribute vec3 aCol; attribute float aSeed;',
+    'uniform vec4 uRect; uniform vec2 uView; uniform float uT0; uniform float uT1; uniform float uP; uniform vec2 uC;',
+    'uniform float uX0; uniform float uClear; uniform float uTime; uniform float uDpr; uniform float uScale; uniform float uManA;',
     'varying vec4 vC;',
+    'void hide(){ gl_Position = vec4(2.0, 2.0, 0.0, 1.0); gl_PointSize = 0.0; vC = vec4(0.0); }',
     'void main(){',
-    ' bool isMan = aKind < 0.5;',
-    ' float age = ((isMan ? uT0 : uT1) - aM) * 3.0;',
-    ' if (age > 0.0) age += uExtra;',
-    ' if (age <= 0.0) { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); gl_PointSize = 0.0; vC = vec4(0.0); return; }',
     ' float s = aSeed, s2 = fract(s * 7.31), s3 = fract(s * 13.7);',
-    ' vec2 st = isMan ? uRect.xy + aStart * uRect.zw : aStart;',
-    ' vec2 d;',
-    ' if (isMan) {',
-    '  d.x = -(50.0 + 150.0 * s) * age + 22.0 * sin(age * 2.4 + s * 40.0) * age;',
-    '  d.y = -(20.0 + 80.0 * s2) * age + 26.0 * sin(age * 1.9 + s * 23.0) * age;',
+    ' bool isText = aKind > 0.5;',
+    ' vec2 coverPx = uRect.xy + aCover * uRect.zw;',
+    // 인물 지점에서 바람에 날리는 움직임: 오른쪽으로 가속, 살짝 떠오름, 부드러운 난류
+    ' float ageM = (uT0 - aM2) * 3.0;',
+    ' if (ageM > 0.0) ageM += uX0;',
+    ' vec2 dM = vec2(0.0);',
+    ' if (ageM > 0.0) {',
+    '  float a15 = pow(ageM, 1.55);',
+    '  dM = vec2((0.05 + 0.30 * s) * a15 * uView.x, -(0.012 + 0.05 * s2) * a15 * uView.y);',
+    '  float k = coverPx.y * 0.012 + s * 6.28;',
+    '  dM.y += (sin(ageM * 2.1 + k) * 0.035 + sin(ageM * 4.3 + k * 1.7) * 0.012) * uView.y * min(ageM, 1.2);',
+    '  dM.x += sin(ageM * 1.7 + k * 0.6) * 0.02 * uView.x * min(ageM, 1.0);',
+    ' }',
+    ' vec2 manPos = coverPx + dM;',
+    ' float lifeM = ageM > 0.0 ? 1.0 - smoothstep(0.9 + s3 * 0.6, 2.2 + s3 * 0.9, ageM) : 1.0;',
+    ' float bornM = smoothstep(0.0, 0.2, ageM);',
+    ' vec3 sand = mix(vec3(0.96, 0.80, 0.52), vec3(0.85, 0.62, 0.36), s2);',
+    ' vec2 pos; vec3 col; float a; float size;',
+    ' if (!isText) {',
+    '  if (ageM <= 0.0) { hide(); return; }',
+    '  pos = manPos;',
+    '  col = mix(aCol * 1.35 * uManA, sand, bornM * (0.6 + 0.4 * s3));',
+    '  a = lifeM * (0.35 + 0.5 * s3);',
+    '  size = (0.9 + 1.4 * s2) * (1.0 + 0.4 * (1.0 - bornM)) * uScale;',
     ' } else {',
-    '  d.x = (10.0 + 60.0 * s) * age + 14.0 * sin(age * 2.2 + s * 31.0) * age;',
-    '  d.y = -(30.0 + 70.0 * s2) * age + 12.0 * sin(age * 2.7 + s * 17.0) * age;',
-    ' }',
-    ' d *= uScale;',
-    ' d += 4.0 * uScale * vec2(sin(uTime * 0.9 + s * 60.0), cos(uTime * 0.7 + s2 * 50.0)) * min(age, 1.0);',
-    ' vec2 pos = st + d;',
-    ' float life = 1.0 - smoothstep(0.25, 1.4 + s3 * 1.3, age);',
-    ' float glow = smoothstep(0.0, 0.25, age);',
-    ' vec3 col = mix(aCol * 1.4 + vec3(0.05, 0.035, 0.02), vec3(1.0, 0.82, 0.5), glow * (0.55 + 0.45 * s2));',
-    ' if (isMan) col *= uManA + (1.0 - uManA) * glow;',
-    ' float a = life * (0.45 + 0.55 * s3);',
-    ' float size = (1.0 + 1.7 * s2) * (1.0 + 0.5 * (1.0 - glow)) * uScale;',
-    ' if (aTgtCol > 0.5) {',
-    '  float g = clamp((uP - uG.x - s3 * 0.09) / (uG.y - uG.x), 0.0, 1.0);',
-    '  g = g * g * (3.0 - 2.0 * g);',
-    '  vec2 to = aTgt - pos;',
+    '  float age1 = (uT1 - aM1) * 3.0;',
+    '  if (age1 <= 0.0) { hide(); return; }',
+    // 부서진 글자가 바람에 오른쪽으로 흩날림
+    '  float w = min(age1, 2.0);',
+    '  vec2 tp = aStart + vec2((0.03 + 0.08 * s) * w * uView.x, (sin(age1 * 2.3 + s * 30.0) * 0.02 - (0.01 + 0.03 * s2) * w) * uView.y);',
+    '  tp += 3.0 * uScale * vec2(sin(uTime * 1.1 + s * 40.0), cos(uTime * 0.8 + s2 * 30.0)) * min(age1, 1.0);',
+    // 곡선을 그리며 인물에 내려앉아 몸을 덮음
+    '  float c = clamp((uP - uC.x - s3 * 0.08) / (uC.y - uC.x), 0.0, 1.0);',
+    '  c = c * c * (3.0 - 2.0 * c);',
+    '  vec2 to = manPos - tp;',
     '  vec2 n = normalize(vec2(-to.y, to.x) + vec2(0.0001));',
-    '  pos = mix(pos, aTgt, g) + n * sin(g * 3.14159) * (s - 0.5) * 160.0 * uScale;',
-    '  vec3 tc = aTgtCol > 1.5 ? vec3(1.0, 0.88, 0.54) : vec3(0.95, 0.94, 0.92);',
-    '  col = mix(col, tc, g);',
-    '  a = mix(max(a, 0.3 + 0.25 * s3), 0.9, g) * (1.0 - uSettle);',
-    '  size = mix(size, uDot, g);',
+    '  pos = mix(tp, manPos, c) + n * sin(c * 3.14159) * (s - 0.5) * 200.0 * uScale;',
+    '  pos += c * (1.0 - bornM) * 2.5 * uScale * vec2(sin(uTime * 2.0 + s * 70.0), cos(uTime * 1.7 + s2 * 60.0));',
+    '  col = mix(aCol, sand, smoothstep(0.0, 0.5, age1));',
+    '  a = (0.5 + 0.45 * s3) * lifeM;',
+    '  size = (1.0 + 1.4 * s2) * uScale;',
     ' }',
+    ' a *= (1.0 - uClear) * (1.0 - smoothstep(uView.x * 0.98, uView.x * 1.06, pos.x));',
+    ' if (a < 0.004) { hide(); return; }',
     ' gl_Position = vec4(pos.x / uView.x * 2.0 - 1.0, 1.0 - pos.y / uView.y * 2.0, 0.0, 1.0);',
     ' vC = vec4(col * a, a);',
     ' gl_PointSize = uDpr * size;',
     '}'
   ].join('\n');
-  // 공기 중에 떠다니는 먼지 (스크롤할수록 왼쪽으로 바람)
+  // 공기 중 모래: 스크롤하면 오른쪽으로 부는 바람
   var VS_AIR = [
-    'attribute vec4 aR; uniform vec2 uView; uniform float uTime; uniform float uP; uniform float uDpr; uniform float uScale;',
+    'attribute vec4 aR; uniform vec2 uView; uniform float uTime; uniform float uP; uniform float uWind; uniform float uDpr; uniform float uScale;',
     'varying vec4 vC;',
     'void main(){',
-    ' float x = fract(aR.x - uTime * 0.004 * (0.4 + aR.w) - uP * 0.9 * (0.4 + aR.y));',
-    ' float y = fract(aR.y + 0.015 * sin(uTime * 0.3 + aR.z * 20.0) + uP * 0.12 * (aR.w - 0.5));',
+    ' float x = fract(aR.x + uTime * 0.003 * (0.4 + aR.w) + uP * 1.4 * (0.35 + aR.y));',
+    ' float y = fract(aR.y + 0.02 * sin(uTime * 0.25 + aR.z * 20.0 + x * 3.0) - uP * 0.08 * aR.w);',
     ' vec2 px = vec2(x, y) * uView;',
     ' gl_Position = vec4(px.x / uView.x * 2.0 - 1.0, 1.0 - px.y / uView.y * 2.0, 0.0, 1.0);',
-    ' float wind = smoothstep(0.04, 0.4, uP) * (1.0 - smoothstep(0.7, 1.0, uP));',
-    ' float a = (0.1 + 0.45 * aR.z * aR.z) * (0.65 + 0.35 * sin(uTime * 1.5 + aR.w * 50.0)) * (0.55 + 0.9 * wind);',
-    ' vC = vec4(vec3(1.0, 0.85, 0.6) * a, a);',
-    ' gl_PointSize = uDpr * (0.8 + 2.2 * aR.w * aR.w) * uScale;',
+    ' float a = (0.08 + 0.4 * aR.z * aR.z) * (0.7 + 0.3 * sin(uTime * 1.3 + aR.w * 50.0)) * (0.5 + 1.1 * uWind);',
+    ' vC = vec4(vec3(0.98, 0.82, 0.56) * a, a);',
+    ' gl_PointSize = uDpr * (0.7 + 2.0 * aR.w * aR.w) * uScale;',
     '}'
   ].join('\n');
   var FS_PT = [
@@ -1055,68 +1153,53 @@ var Hero = (function () {
   // 글자 위치가 바뀔 때마다(리사이즈·폰트·화면 복귀) 다시 만듦
   function buildText() {
     var d = dprCap();
-    // 1) 사라질 줄: 텍스처 + 입자 원천
     var life = rasterLine(lineLife, d);
     if (G.texLife) gl.deleteTexture(G.texLife);
     G.texLife = makeTex(life.canvas);
     G.life = life;
     var lc = life.canvas, ld = lc.getContext('2d').getImageData(0, 0, lc.width, lc.height).data;
-    var lstep = Math.max(1, Math.round((mobile ? 2.5 : 2) * d));
-    var lifeP = [];
-    for (var y = 0; y < lc.height; y += lstep) for (var x = 0; x < lc.width; x += lstep) {
+    var step = Math.max(1, Math.round((mobile ? 1.6 : 1.3) * d));
+    var list = [], i;
+    // 인물 입자
+    for (i = 0; i < manSamples.length; i++) {
+      var ms = manSamples[i];
+      list.push([0, ms.sx, ms.sy, ms.sx, ms.sy, 0, ms.m, ms.r, ms.g, ms.b]);
+    }
+    // 글자 입자: 각자 인물 몸의 한 지점을 덮으러 감
+    for (var y = 0; y < lc.height; y += step) for (var x = 0; x < lc.width; x += step) {
       var k = (y * lc.width + x) * 4;
-      if (ld[k + 3] < 128) continue;
-      lifeP.push({ px: life.box.x + x / d, py: life.box.y + y / d, m: dmap(x / lc.width, y / lc.height), r: ld[k] / 255, g: ld[k + 1] / 255, b: ld[k + 2] / 255 });
+      if (ld[k + 3] < 110) continue;
+      var cv0 = manSamples[(Math.random() * manSamples.length) | 0];
+      list.push([1, life.box.x + x / d, life.box.y + y / d, cv0.sx, cv0.sy, dmap(x / lc.width, y / lc.height), cv0.m, ld[k] / 255, ld[k + 1] / 255, ld[k + 2] / 255]);
     }
-    // 2) 새로 생길 줄의 목표 위치 (금색 글자 구분)
-    var rec = rasterLine(lineRecord, 1);
-    var rc = rec.canvas, rd = rc.getContext('2d').getImageData(0, 0, rc.width, rc.height).data;
-    var tstep = 3, tg = [];
-    for (var ty = 0; ty < rc.height; ty += tstep) for (var tx = 0; tx < rc.width; tx += tstep) {
-      var tk = (ty * rc.width + tx) * 4;
-      if (rd[tk + 3] < 140) continue;
-      var isGold = rd[tk + 2] < 200 && rd[tk] > 200;
-      tg.push({ x: rec.box.x + tx + (Math.random() - 0.5), y: rec.box.y + ty + (Math.random() - 0.5), c: isGold ? 2 : 1 });
-    }
-    shuffle(tg);
-    // 3) 목표를 맡을 입자: 절반은 글자에서, 절반은 일찍 흩어지는 인물 입자에서
-    var all = [], i;
-    for (i = 0; i < manSamples.length; i++) { var s = manSamples[i]; all.push({ kind: 0, x: s.sx, y: s.sy, m: s.m, r: s.r, g: s.g, b: s.b, t: null }); }
-    var manEarly = shuffle(all.slice().sort(function (p, q) { return p.m - q.m; }).slice(0, Math.floor(all.length * 0.55)));
-    for (i = 0; i < lifeP.length; i++) { var l = lifeP[i]; all.push({ kind: 1, x: l.px, y: l.py, m: l.m, r: l.r, g: l.g, b: l.b, t: null }); }
-    var lifeArr = shuffle(all.slice(manSamples.length));
-    var half = Math.floor(tg.length / 2), ti = 0;
-    for (i = 0; i < lifeArr.length && ti < half; i++) lifeArr[i].t = tg[ti++];
-    for (i = 0; i < manEarly.length && ti < tg.length; i++) manEarly[i].t = tg[ti++];
-
-    var n = all.length;
-    var aStart = new Float32Array(n * 2), aKind = new Float32Array(n), aM = new Float32Array(n), aCol = new Float32Array(n * 3);
-    var aSeed = new Float32Array(n), aTgt = new Float32Array(n * 2), aTgtCol = new Float32Array(n);
-    var mMin = [1, 1], mMax = [0, 0];
+    var n = list.length;
+    var aStart = new Float32Array(n * 2), aCover = new Float32Array(n * 2), aKind = new Float32Array(n), aM1 = new Float32Array(n), aM2 = new Float32Array(n);
+    var aCol = new Float32Array(n * 3), aSeed = new Float32Array(n);
+    var r1 = [1, 0], r2 = [1, 0];
     for (i = 0; i < n; i++) {
-      var o = all[i];
-      aStart[i * 2] = o.x; aStart[i * 2 + 1] = o.y; aKind[i] = o.kind; aM[i] = o.m;
-      aCol[i * 3] = o.r; aCol[i * 3 + 1] = o.g; aCol[i * 3 + 2] = o.b; aSeed[i] = Math.random();
-      if (o.t) { aTgt[i * 2] = o.t.x; aTgt[i * 2 + 1] = o.t.y; aTgtCol[i] = o.t.c; }
-      mMin[o.kind] = Math.min(mMin[o.kind], o.m); mMax[o.kind] = Math.max(mMax[o.kind], o.m);
+      var o = list[i];
+      aKind[i] = o[0]; aStart[i * 2] = o[1]; aStart[i * 2 + 1] = o[2]; aCover[i * 2] = o[3]; aCover[i * 2 + 1] = o[4];
+      aM1[i] = o[5]; aM2[i] = o[6]; aCol[i * 3] = o[7]; aCol[i * 3 + 1] = o[8]; aCol[i * 3 + 2] = o[9]; aSeed[i] = Math.random();
+      r2[0] = Math.min(r2[0], o[6]); r2[1] = Math.max(r2[1], o[6]);
+      if (o[0]) { r1[0] = Math.min(r1[0], o[5]); r1[1] = Math.max(r1[1], o[5]); }
     }
     if (G.parts) G.parts.bufs.forEach(function (b) { gl.deleteBuffer(b); });
-    var bufs = [makeBuf(aStart), makeBuf(aKind), makeBuf(aM), makeBuf(aCol), makeBuf(aSeed), makeBuf(aTgt), makeBuf(aTgtCol)];
-    G.parts = { n: n, bufs: bufs, mMin: mMin, mMax: mMax, dot: tstep * 1.25 };
+    G.parts = { n: n, bufs: [makeBuf(aStart), makeBuf(aCover), makeBuf(aKind), makeBuf(aM1), makeBuf(aM2), makeBuf(aCol), makeBuf(aSeed)], r1: r1, r2: r2 };
   }
 
   function attr(loc, buf, size) {
     if (loc === undefined || loc < 0) return;
     gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
   }
-  function disableAll() { for (var i = 0; i < 8; i++) gl.disableVertexAttribArray(i); }
-  function thresh(kind, k) { var P = G.parts; return (P.mMin[kind] - 0.03) + (P.mMax[kind] - P.mMin[kind] + 0.08) * k; }
+  function disableAll() { for (var i = 0; i < 10; i++) gl.disableVertexAttribArray(i); }
+  // 경계를 충분히 아래에서 시작해 스크롤 전에는 글자·인물이 온전히 보이게 함
+  function thresh(r, k) { return (r[0] - 0.06) + (r[1] - r[0] + 0.14) * k; }
 
-  function drawQuad(tex, dst, uT, alpha) {
+  function drawQuad(tex, dst, uT, alpha, warm) {
     var q = G.quad; gl.useProgram(q.p); disableAll();
     attr(q.a.aPos, G.bQuad, 2);
     gl.uniform4fv(q.u.uDst, dst); gl.uniform2f(q.u.uView, vw, vh);
-    gl.uniform1f(q.u.uT, uT); gl.uniform1f(q.u.uAlpha, alpha);
+    gl.uniform1f(q.u.uT, uT); gl.uniform1f(q.u.uAlpha, alpha); gl.uniform1f(q.u.uWarm, warm || 0);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(q.u.uTex, 0);
     gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, G.texMap); gl.uniform1i(q.u.uMap, 1);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -1129,30 +1212,35 @@ var Hero = (function () {
     gl.viewport(0, 0, cv.width, cv.height);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.enable(gl.BLEND);
+    var P = G.parts;
     var k0 = sstep(TL.manA, TL.manB, p), k1 = sstep(TL.lifeA, TL.lifeB, p);
-    var uT0 = thresh(0, k0), uT1 = thresh(1, k1);
+    var uT0 = k0 > 0 ? thresh(P.r2, k0) : -1, uT1 = k1 > 0 ? thresh(P.r1, k1) : -1;
+    var warm = sstep(TL.coverA + 0.06, TL.coverB + 0.04, p) * 0.55;
+    var wind = sstep(TL.lifeA, TL.coverB, p) * (1 - sstep(TL.clearA, TL.clearB + 0.08, p));
 
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    if (k0 < 1) drawQuad(G.texMan, [rect.x + MAN.l * rect.w, rect.y + MAN.t * rect.h, MAN.w * rect.w, MAN.h * rect.h], uT0, manA);
-    if (k1 < 1) { var b = G.life.box; drawQuad(G.texLife, [b.x, b.y, b.w, b.h], uT1, introLife); }
+    if (k0 < 1) drawQuad(G.texMan, [rect.x + MAN.l * rect.w, rect.y + MAN.t * rect.h, MAN.w * rect.w, MAN.h * rect.h], uT0, manA, warm);
+    if (k1 < 1) { var b = G.life.box; drawQuad(G.texLife, [b.x, b.y, b.w, b.h], uT1, introLife, 0); }
 
-    gl.blendFunc(gl.ONE, gl.ONE); // 가산 혼합: 금빛 발광
+    gl.blendFunc(gl.ONE, gl.ONE); // 가산 혼합: 모래빛 발광
     var a = G.air; gl.useProgram(a.p); disableAll();
     attr(a.a.aR, G.bAir, 4);
-    gl.uniform2f(a.u.uView, vw, vh); gl.uniform1f(a.u.uTime, time); gl.uniform1f(a.u.uP, p);
+    gl.uniform2f(a.u.uView, vw, vh); gl.uniform1f(a.u.uTime, time); gl.uniform1f(a.u.uP, p); gl.uniform1f(a.u.uWind, wind);
     gl.uniform1f(a.u.uDpr, d); gl.uniform1f(a.u.uScale, scale);
     gl.drawArrays(gl.POINTS, 0, G.airN);
 
-    if (k0 > 0 || k1 > 0) {
-      var P = G.parts, pp = G.part; gl.useProgram(pp.p); disableAll();
-      attr(pp.a.aStart, P.bufs[0], 2); attr(pp.a.aKind, P.bufs[1], 1); attr(pp.a.aM, P.bufs[2], 1);
-      attr(pp.a.aCol, P.bufs[3], 3); attr(pp.a.aSeed, P.bufs[4], 1); attr(pp.a.aTgt, P.bufs[5], 2); attr(pp.a.aTgtCol, P.bufs[6], 1);
+    var clear = sstep(TL.clearA, TL.clearB, p);
+    if (k1 > 0 && clear < 1) {
+      var pp = G.part, B = P.bufs; gl.useProgram(pp.p); disableAll();
+      attr(pp.a.aStart, B[0], 2); attr(pp.a.aCover, B[1], 2); attr(pp.a.aKind, B[2], 1);
+      attr(pp.a.aM1, B[3], 1); attr(pp.a.aM2, B[4], 1); attr(pp.a.aCol, B[5], 3); attr(pp.a.aSeed, B[6], 1);
       gl.uniform4f(pp.u.uRect, rect.x, rect.y, rect.w, rect.h); gl.uniform2f(pp.u.uView, vw, vh);
       gl.uniform1f(pp.u.uT0, uT0); gl.uniform1f(pp.u.uT1, uT1); gl.uniform1f(pp.u.uP, p);
-      gl.uniform2f(pp.u.uG, TL.gatherA, TL.gatherB); gl.uniform1f(pp.u.uSettle, sstep(TL.settleA, TL.settleB, p));
-      gl.uniform1f(pp.u.uExtra, Math.max(0, p - TL.manB) * 3.0);
-      gl.uniform1f(pp.u.uTime, time); gl.uniform1f(pp.u.uDpr, d); gl.uniform1f(pp.u.uScale, scale);
-      gl.uniform1f(pp.u.uDot, P.dot); gl.uniform1f(pp.u.uManA, manA);
+      gl.uniform2f(pp.u.uC, TL.coverA, TL.coverB);
+      // 다 흩어진 뒤에도 바람에 계속 밀려 화면 밖으로
+      gl.uniform1f(pp.u.uX0, Math.max(0, p - TL.manB) * 7.0);
+      gl.uniform1f(pp.u.uClear, clear);
+      gl.uniform1f(pp.u.uTime, time); gl.uniform1f(pp.u.uDpr, d); gl.uniform1f(pp.u.uScale, scale); gl.uniform1f(pp.u.uManA, manA);
       gl.drawArrays(gl.POINTS, 0, P.n);
     }
   }
@@ -1164,20 +1252,30 @@ var Hero = (function () {
     computeRect(p);
     plate.style.transform = 'translate3d(' + rect.x.toFixed(2) + 'px,' + rect.y.toFixed(2) + 'px,0) scale(' + (rect.w / sw).toFixed(5) + ')';
     var k0 = sstep(TL.manA, TL.manB, p), k1 = sstep(TL.lifeA, TL.lifeB, p);
-    var settle = sstep(TL.settleA, TL.settleB, p);
+    if (haze) haze.style.opacity = (0.9 * sstep(TL.lifeA + 0.04, TL.coverB, p) * (1 - sstep(TL.clearA - 0.04, TL.clearB + 0.06, p))).toFixed(3);
     if (glReady) {
       // 첫 진입 페이드인을 GL 글자에도 똑같이 적용
       introLife = sstep(300, 1200, performance.now() - introT0);
       drawGL(p, time);
     } else {
       var mz = rect.w / sw;
-      manImg.style.transform = 'translate3d(' + (rect.x + MAN.l * rect.w).toFixed(2) + 'px,' + (rect.y + MAN.t * rect.h).toFixed(2) + 'px,0) scale(' + mz.toFixed(5) + ')';
+      // WebGL이 없을 때: 오른쪽으로 밀려나며 흐려짐
+      manImg.style.transform = 'translate3d(' + (rect.x + MAN.l * rect.w + k0 * vw * 0.3).toFixed(2) + 'px,' + (rect.y + MAN.t * rect.h).toFixed(2) + 'px,0) scale(' + mz.toFixed(5) + ')';
       manImg.style.opacity = ((1 - k0) * (narrow ? 0.6 : 1)).toFixed(3);
+      manImg.style.filter = k0 > 0.01 ? 'blur(' + (k0 * 12).toFixed(1) + 'px)' : 'none';
       lineLife.style.opacity = (1 - k1).toFixed(3);
+      lineLife.style.transform = 'translateX(' + (k1 * 160).toFixed(1) + 'px)';
       lineLife.style.filter = k1 > 0.01 && k1 < 0.99 ? 'blur(' + (k1 * 10).toFixed(1) + 'px)' : 'none';
-      settle = sstep(TL.gatherA, TL.settleB, p);
     }
-    lineRecord.style.opacity = settle.toFixed(3);
+    // '기록은 남는다': 한 글자씩 아래에서 떠오르며 또렷해짐
+    var nC = recChars.length, span = TL.recB - TL.recA, each = span * 0.42;
+    recChars.forEach(function (ch, i) {
+      var st = TL.recA + (span - each) * (i / Math.max(1, nC - 1));
+      var t = sstep(st, st + each, p);
+      setVis(ch, t);
+      ch.style.top = t > 0.001 && t < 0.999 ? ((1 - t) * 0.22).toFixed(3) + 'em' : '0';
+      ch.style.filter = t > 0.001 && t < 0.99 ? 'blur(' + ((1 - t) * 6).toFixed(1) + 'px)' : 'none';
+    });
     setVis(leadA, 1 - sstep(TL.leadOutA, TL.leadOutB, p));
     // 신청 영역: 흐릿하게 떠오르며 또렷해짐
     var c = sstep(TL.ctaA, TL.ctaB, p);
@@ -1405,8 +1503,8 @@ var Hero = (function () {
   function renderAuthUtil() {
     var u = me();
     var html = u
-      ? '<span class="acc who">' + esc(u.name) + '님</span><a class="acc" href="#/my/info">나의 활동 정보</a><a class="acc" href="#/logout">로그아웃</a>'
-      : '<a class="acc" href="#/login">로그인</a><a class="acc" href="#/join">회원가입</a>';
+      ? '<span class="acc who">' + esc(u.name) + '님</span><span class="sep" aria-hidden="true"></span><a class="acc" href="#/my/info">나의 활동 정보</a><a class="acc" href="#/logout">로그아웃</a>'
+      : '<a class="acc" href="#/login">로그인</a><a class="acc join" href="#/join">회원가입</a>';
     $('#utilAuth').innerHTML = html;
     $('#allUtil').innerHTML = u
       ? '<a href="#/my/info">나의 활동 정보</a><a href="#/logout">로그아웃</a>'
@@ -1430,28 +1528,29 @@ var Hero = (function () {
     }
   });
   /* ======================= 데이터 =======================
-     게시판 제목은 실제 게시판(2026.11.20 조회)의 내용을 요약한 것. 본문은 원문 게시판에서 확인 */
+     게시판 제목·등록일·조회수는 실제 게시판 목록(2026.11.20 확인) 기준. 목록에서 잘려 보이는 제목은 그대로 둠. 본문은 원문에서 확인 */
   var NOTICES = [
-    ['2026년 예술인 개인 심리상담 지원 신청 마감 안내(8.31.)', '2026-08-31', 404, 0],
-    ['2026년 예술인 개인 심리상담 지원 신청 안내', '2026-02-24', 2613, 3],
-    ['예술활동증명 신속심사제 운영 안내', '2026-02-11', 4898, 0],
-    ['예술활동증명 보완자료 제출 기한 변경 안내', '2026-01-20', 3878, 0],
-    ['문학 분야 웹소설 제출자료 변경 안내', '2026-01-16', 3021, 1],
-    ['예술활동증명 신청 시스템 정기점검 안내(2025.12.17.~)', '2025-11-26', 2579, 0],
-    ['2025년 자살예방 생명지킴이 교육 신청 안내', '2025-08-07', 1651, 1],
-    ['예술인 개인 심리상담 신청 마감 안내(2025.8.13.)', '2025-08-07', 4128, 0],
-    ['2025년 예술인 개인 심리상담 지원 신청 안내', '2025-02-21', 7387, 3],
-    ['예술활동증명 신청 시스템 정기점검 안내(2024.12.3.~)', '2024-12-13', 2835, 0]
+    ['[안내] 2026년 개인 심리상담 지원 신청접수 마감 안내 (8월 31일 월요일 1…', '2026-08-31', 405, 0],
+    ['[공고] 2026년 개인 심리상담 신청 안내', '2026-02-24', 2614, 3],
+    ['[안내] 신속한 심의를 위한 예술활동증명 제도 운영 안내', '2026-02-11', 4902, 0],
+    ['예술활동증명 자료보완 기한 변경 안내', '2026-01-20', 3885, 0],
+    ['예술활동증명 문학분야 웹소설 필수자료 변경 안내', '2026-01-16', 3035, 1],
+    ['[안내] 예술활동증명 신청 시스템 정기 점검 안내(2025. 12. 17. ~ 2…', '2025-11-26', 2582, 0],
+    ['[안내] 2025 한국예술인복지재단 자살예방 생명지킴이 교육신청 안내', '2025-08-07', 1652, 1],
+    ['[안내] 개인 심리상담 지원 신청접수 마감 안내 (마감일시:8.13,(수), 17…', '2025-08-07', 4131, 0],
+    ['[공고] 2025년 개인 심리상담 신청 안내', '2025-02-21', 7387, 3],
+    ['[안내] 예술인경력정보시스템 예술활동증명 신청시스템 정기점검 안내(’24.12.3…', '2024-12-13', 2835, 0]
   ];
+  var NOTICE_TOTAL = 218;
   var NOTICE_URL = 'https://www.kawfartist.kr/hkor/not/not1/bbs/bbsList.do?bbs_cd_n=2';
   var PENSION_NOTICES = [
-    ['2026년 예술인 국민연금 보험료 지원사업 신청 마감 안내', '2026-07-31', 1706],
-    ['2025년 예술인 국민연금 보험료 지원사업 신청 마감 안내', '2025-08-25', 6006],
-    ['2026년 예술인 국민연금 보험료 지원사업 공고', '2023-02-08', 42401],
-    ['2026년 표준계약서 온라인 동영상 교육 매뉴얼', '2023-02-08', 3708],
-    ['2026년 자주하는 질문', '2023-02-08', 5090],
-    ['2026년 신청 매뉴얼(예술인경력정보시스템)', '2023-02-08', 3577],
-    ['2026년 서류 발급 안내', '2023-02-08', 3453]
+    ['[안내] 2026년 『예술인 국민연금 보험료 지원』 사업 신청 접수 마감 안내', '2026-07-31', 1990],
+    ['[안내] 2025년『예술인 국민연금 보험료 지원』사업 신청접수 마감 안내', '2025-08-25', 6049],
+    ['[공고] 2026년 예술인 국민연금 보험료 지원 사업 공고', '2023-02-08', 42686],
+    ['[교육수강매뉴얼] 2026년 표준계약 관련 동영상 교육(온라인)', '2023-02-08', 3762],
+    ['[FAQ] 2026년 예술인 국민연금보험료 지원_자주하는 질문', '2023-02-08', 5169],
+    ['[신청메뉴얼] 2026년 예술인 국민연금 보험료 지원사업 신청 매뉴얼(예술인경력정보시스템)', '2023-02-08', 3652],
+    ['[서류발급가이드] 2026년 예술인 국민연금 보험료 지원_서류발급가이드', '2023-02-08', 3504]
   ];
   var PENSION_URL = 'https://www.kawfartist.kr/hkor/ws/ws06/ws06_03/bbs/bbsList.do?bbs_cd_n=7';
   // 법률상담 게시판 최근 글 (원문 그대로의 제목, '잠김'은 비공개)
@@ -1469,16 +1568,16 @@ var Hero = (function () {
   ];
   var LEGAL_URL = 'https://www.kawfartist.kr/hkor/no/no02/consultUser/list.do';
   var FAQ = [
-    ['이용문의', '‘처리중’ 메시지에서 더 진행되지 않아요.', '윈도우에서 엣지나 크롬 브라우저를 쓰는 것이 가장 안정적입니다. 첨부파일은 gif, jpg, jpeg, hwp, doc, docx, ppt, pptx, zip, png 형식만 올릴 수 있고, PNG는 3MB 이하, 파일 이름은 10자 이내로 맞춰 주세요. 계속 실패하면 zip으로 묶어 올리고, 그래도 안 되면 1:1 문의의 ‘사이트이용문의’로 알려 주세요.'],
-    ['사업신청', '다른 사람이 대신 신청할 수 있나요?', '가능합니다. 다만 본인이 서명한 위임장이 필요합니다. 위임장은 재단 자료실 양식을 사용해 art_visual@kawf.kr로 보내거나 02-3668-0200으로 문의하세요.'],
+    ['이용문의', '‘처리중’ 메시지에서 더 진행되지 않아요.', '윈도우의 엣지·크롬 환경에 맞춰져 있어 모바일, 아이패드, 맥에서는 정상 작동이 어렵습니다. 최신 크롬을 권장하며 구형 인터넷 익스플로러는 작동하지 않을 수 있습니다. 첨부파일은 gif, jpg, jpeg, hwp, doc, docx, ppt, pptx, zip, png 형식만 올릴 수 있고, PNG는 3MB 이하, 파일 이름은 10자 이내로 맞춰 주세요. 계속 실패하면 zip으로 묶어 올리고, 그래도 안 되면 1:1 문의의 ‘사이트이용문의’로 알려 주세요.'],
+    ['사업신청', '다른 사람이 대신 신청할 수 있나요?', '대리인이 신청하려면 위임장을 반드시 제출해야 합니다(개인정보 보호법 제15조 제1항 제1호). 위임장 양식은 재단 홈페이지 자료실에서 받을 수 있고, art_visual@kawf.kr로 제출합니다. 문의는 02-3668-0200입니다.'],
     ['사업신청', '개명했는데 이름을 바꾸려면 어떻게 하나요?', '주민등록초본을 art_visual@kawf.kr로 보내 주세요. 보통 1~2일 안에 반영됩니다.'],
     ['사업신청', '예전 신청서가 계속 ‘작성중’으로 남아 있어요.', '2018년에 신청 절차가 3단계에서 2단계로 바뀌면서 이전 작성 건이 자동으로 바뀌지 않았습니다. 1:1 문의나 전화로 요청하면 삭제하거나 완료로 정리해 드립니다. 새로 작성 중인 신청서가 있다면 먼저 알려 주세요.'],
     ['사업신청', '재신청 날짜는 어디서 확인하나요?', '로그인 후 예술활동증명 > 신청내역에서 확인할 수 있습니다. 유효기간 만료 6개월 전부터 재신청할 수 있고, 복지사업에 신청하려면 유효기간이 3개월 이상 남아 있어야 합니다. 원로예술인(만 70세 이상)과 무형유산 보유자·전승교육사는 해당하지 않습니다.'],
-    ['사업내용', '예술활동증명은 얼마나 걸리나요?', '보통 15~20주 이상 걸리고, 신청이 몰리는 시기에는 더 길어집니다. 규정에 맞는지 확인하는 행정검토와 전문가 3인의 심의를 거치며, 결과는 문자나 이메일로 알려 드립니다.'],
+    ['사업내용', '예술활동증명은 얼마나 걸리나요?', '접수 후 약 15~20주 이상 걸리고, 신청이 몰리면 더 길어질 수 있습니다. 규정에 맞는지 확인하는 행정검토와 전문가 3인의 심의를 거치며, 결과는 문자나 이메일로 알려 드립니다.'],
     ['사업내용', '예술활동증명을 마치면 무엇을 할 수 있나요?', '재단의 복지사업에 신청할 수 있고, 예술인경력정보시스템에서 예술인패스 카드를 신청할 수 있습니다.'],
-    ['사업신청', '이미 증명을 받았는데 복지사업에 신청하고 싶어요.', '신청하기에서 ‘재신청’을 선택해 다시 신청하세요. 예술활동, 예술활동 수입, 기준 외 활동 중 한 가지 방식을 골라야 하며 이전 방식을 그대로 쓸 수는 없습니다.'],
+    ['사업신청', '표준계약서·산재보험 특례로 증명을 마쳤는데 복지지원 사업에 신청하려면요?', '예술활동증명 > 신청하기에서 ‘재신청’ 절차를 밟아야 합니다. 예술활동, 예술활동 수입, 기준 외 활동 중 한 가지 방법을 골라야 하며, 기존 신청 방법으로는 재신청할 수 없습니다.'],
     ['사업신청', '심의를 빨리 받을 수 있나요?', '신청한 순서대로 심의하기 때문에 앞당길 수 없습니다. 복지사업에 신청할 계획이라면 미리 신청하세요.'],
-    ['사업소개', '예술인패스는 무엇이고 어떻게 받나요?', '예술활동증명을 마친 예술인, 자격을 갖춘 문화예술교육사·큐레이터, 박물관·미술관 설립자와 관장이 받을 수 있는 카드로, 공공 문화시설 할인 혜택이 있습니다. 예술인경력정보시스템에서 신청하며, 카드 유효기간은 증명 유효기간과 다릅니다.'],
+    ['사업소개', '예술인패스는 무엇이고 어떻게 받나요?', '예술활동증명을 완료한 예술인, 문화예술교육사 또는 학예사 자격증 소지자, 박물관·미술관 설립자 또는 관장이 발급을 신청할 수 있습니다. 국·공립 문화예술기관(박물관, 미술관, 공연장)과 생활속공간에서 요금 할인을 받을 수 있습니다. 발급 신청은 예술인경력정보시스템에서, 혜택 안내는 artpass.kawf.kr에서 확인하세요. 예술인패스 카드와 예술활동증명의 유효기간은 다릅니다.'],
     ['이용문의', '문자나 이메일 안내를 받지 못했어요.', '일시적인 통신 오류로 안내가 가지 않을 수 있습니다. 예술활동증명 > 신청내역에서 진행 상황을 직접 확인하세요.'],
     ['사업소개', '예술활동증명 확인서는 어떻게 받나요?', '로그인 후 신청내역에서 ‘출력’을 누르고, 인쇄 창에서 PDF로 저장하면 됩니다.'],
     ['사업신청', '‘미완료’ 결과를 받았어요. 어떻게 다시 신청하나요?', '신청내역에서 ‘미완료’ 상태를 누르면 사유와 재신청 버튼이 나옵니다. 신청서를 고친 뒤 필수 항목을 확인하고 신청하기를 누르세요.']
@@ -1522,7 +1621,7 @@ var Hero = (function () {
       '<p class="callout muted">예술활동증명은 예술인을 ‘승인’하거나 자격을 ‘증명’하는 것이 아니라, 일정 기간의 직업적 예술활동을 확인하는 절차입니다.</p>' +
       '<h2 class="h">신청</h2><ul class="dots">' +
       '<li>연중 언제든 신청할 수 있습니다.</li>' +
-      '<li>온라인 신청이 어렵다면 대면으로 신청할 수 있습니다. 전화(02-3668-0301)나 방문예약으로 먼저 예약하세요.</li>' +
+      '<li>온라인 신청이 어렵다면 대면으로 신청할 수 있습니다. 전화(02-3668-0301)나 ' + extA('http://www.kawf.kr/reservation/reserv02_form.do', '방문 예약 페이지') + '에서 먼저 예약하세요.</li>' +
       '<li>온라인과 대면으로 같은 내용을 중복 신청할 수 없습니다.</li>' +
       '<li>결과 안내까지 10~15주 이상 걸립니다. 재단 사업에 참여할 계획이라면 미리 신청하세요.</li></ul>' +
       '<h2 class="h">신청 대상</h2>' +
@@ -1540,10 +1639,10 @@ var Hero = (function () {
       '<li>위 혜택은 ‘일반 예술활동증명’ 완료자 기준입니다. ‘신진예술인 예술활동증명’과 ‘예술활동증명 특례’ 완료자는 일부 사업에만 참여할 수 있습니다.</li></ul>' +
       '<h2 class="h">관련 법령</h2><p>신청 전에 아래 법령과 지침을 확인하세요.</p>' +
       '<ul class="linklist" style="margin-top:16px">' +
-      '<li>' + extA('https://www.law.go.kr/법령/예술인복지법', '예술인 복지법') + '</li>' +
-      '<li>' + extA('https://www.law.go.kr/법령/예술인복지법시행령', '예술인 복지법 시행령') + '</li>' +
-      '<li>' + extA('https://www.law.go.kr/법령/예술인복지법시행규칙', '예술인 복지법 시행규칙') + '</li>' +
-      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/cs/cs01006_/cs01006_01.jsp', '예술활동증명 운영지침 (원문 페이지)') + '</li></ul>' +
+      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/cs/files/Welfare_act_Article_2_20250408.pdf', '예술인복지법 (PDF)') + '</li>' +
+      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/cs/files/Welfare_act_Enforcement_ordinance_20240208.pdf', '예술인복지법 시행령 (PDF)') + '</li>' +
+      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/cs/files/Welfare_act_Enforcement_regulation_20241105.pdf', '예술인복지법 시행규칙 (PDF)') + '</li>' +
+      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/cs/files/Operation_guidelines_20240813.pdf', '예술활동증명 운영지침 (PDF)') + '</li></ul>' +
       certActions();
   };
   P['cert/guide/method'] = function () {
@@ -1589,46 +1688,51 @@ var Hero = (function () {
   };
   P['cert/guide/criteria'] = function () {
     var gen = [
-      ['문학', '시·수필 5편, 소설 장편 1편 또는 단편 3편, 희곡 1편, 평론 3편, 공통 작품집 1권'],
-      ['일반미술 · 디자인/공예 · 전통미술 · 사진 · 건축', '개인전 1회, 단체전 5회, 기획·기술지원 3회, 평론 5편 또는 1권, 도서·삽화 5편 또는 1권'],
-      ['일반음악 · 대중음악 · 국악', '실연·기획 공연 3회, 지휘 3회, 실연 음원 3곡, 작사·작곡 3곡, 녹음·기술지원 음반 3장, 평론 3편 또는 1권'],
-      ['무용', '무용수 3회, 안무 1회, 기획·기술지원 3회, 평론 3편 또는 1권'],
-      ['연극', '배우 3회, 연출 1회, 극작 1편, 스태프 3회, 평론 3편 또는 1권'],
-      ['영화', '배우 3편, 감독 1편, 시나리오 1편, 스태프 2편, 평론 3편 또는 1권'],
-      ['방송', '출연 3회, 진행 1회, 작가·연출 1편, 스태프 3회, 평론 3편 또는 1권'],
-      ['공연', '마술사·곡예사·코미디언·패션모델 등 실연 3회, 스태프 3회, 평론 3편 또는 1권'],
-      ['만화', '작가 6개월 이상 연재 1작품 또는 5편·1권, 기술·기획 3작품(합계 2년 이상), 평론 3편 또는 1권']
+      ['문학', '시인·수필가 5편 / 소설가 장편 1편 또는 단편 3편 / 희곡작가 1편 / 비평가 3편 / 공통 문학 작품집 1권 이상'],
+      ['일반미술 · 디자인/공예 · 전통미술 · 사진 · 건축', '작가 개인전 1회 / 작가 단체전 5회 / 기획·기술지원 3회 / 비평가 5편 또는 1권 / 단행본(삽화 포함) 5편 또는 1권 이상'],
+      ['일반음악 · 대중음악 · 국악', '참여자 및 기획·기술지원(공연) 3편 / 지휘자 3편 / 실연자(가창, 연주) 3곡 / 작사·작곡가 3곡 / 기획·기술지원(음원) 3장 / 비평가 3편 또는 1권 이상'],
+      ['무용', '무용수 3편 / 안무가 1회 / 기획·기술지원 3편 / 비평가 3편 또는 1권 이상'],
+      ['연극', '배우 3편 / 연출가 1회 / 극작가 1편 / 기획·기술지원(스태프) 3편 / 비평가 3편 또는 1권 이상'],
+      ['영화', '배우 3편 / 연출가 1회 / 극작가 1편 / 기획·기술지원(스태프) 2편 / 비평가 3편 또는 1권 이상'],
+      ['방송', '출연자(배우, 개그맨, 광고 모델 등) 3편 / 출연자(MC) 1편 / 작가·연출가 1편 / 기획·기술지원(스태프) 3편 / 비평가 3편 또는 1권 이상'],
+      ['공연', '공연자(마술사, 곡예사, 개그맨, 패션쇼 모델 등) 3편(회) / 기획·기술지원(스태프) 3편 / 비평가 3편 또는 1권 이상'],
+      ['만화', '작가(글, 그림 등) 1편(6개월 이상 연재) 또는 5편, 1권 이상 / 기술지원 및 기획(채색, 배경, 명암 등) 3편(3편 합계 2년 이상 연재) / 비평가 3편 또는 1권 이상']
     ];
     return '<p class="lede">15개 분야 중 최대 3개를 골라 신청할 수 있습니다. 어느 분야 기준을 적용할지는 작품을 근거로 정합니다.</p>' +
       '<div class="chips" role="group" aria-label="제출자료 종류" style="margin-top:32px"><button type="button" data-crit="gen" aria-pressed="true">일반</button><button type="button" data-crit="new" aria-pressed="false">신진</button><button type="button" data-crit="special" aria-pressed="false">특례·기준 외</button></div>' +
       '<div data-crit-panel="gen">' +
       '<h2 class="h" style="margin-top:0">예술활동 수입</h2>' +
       '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>산정 기간</th><th>최소 기준</th></tr></thead><tbody><tr><td>최근 1년</td><td class="num">120만 원 이상</td></tr><tr><td>최근 5년</td><td class="num">600만 원 이상</td></tr></tbody></table></div>' +
-      '<ul class="dots"><li>세전 금액이 아니라 실제로 받은 금액을 기준으로 합니다.</li><li>계좌 정보, 입금 내역, 예술활동 계약서, 계약과 일치하는 활동 증빙을 제출합니다.</li></ul>' +
+      '<ul class="dots"><li>세전 금액이 아니라 신청자에게 최종적으로 들어온 실수령액을 기준으로 합니다.</li></ul>' +
       '<h2 class="h">공개 발표된 예술활동 (최근 5년)</h2>' +
       '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>분야</th><th>최소 기준</th></tr></thead><tbody>' + gen.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</tbody></table></div>' +
-      '<ul class="dots"><li>같은 제목이라도 6개월 이상 간격을 두고 발표했거나 내용이 다르면 따로 인정합니다.</li><li>공동 창작물은 참여 인원수로 나누어 계산합니다.</li><li>일반미술 전시는 신청일 기준으로 이미 끝난 전시여야 합니다. 장기 공연은 별도의 산정 기준을 따릅니다.</li></ul>' +
-      '<h2 class="h">제출자료 공통 기준</h2><dl class="facts">' +
-      '<dt>전시</dt><dd>전시명, 기간, 장소, 주최, 참여 역할, 작품 사진. 개인전은 공식 자료와 전시장 사진을 함께 냅니다.</dd>' +
-      '<dt>도서·출판</dt><dd>표지, 내지, 발행 정보(발행일, 출판사, ISBN/ISSN), 참여자 정보</dd>' +
-      '<dt>음악</dt><dd>음원 플랫폼 기록, 저작권 등록 자료, 공연 프로그램. MR과 연주곡(Inst.)은 인정하지 않습니다.</dd>' +
-      '<dt>공연·방송</dt><dd>행사·방송 정보, 참여 역할, 포스터·프로그램·크레딧 같은 증빙</dd>' +
-      '<dt>장기 공연</dt><dd>실제 참여를 증명하는 공식 일정표나 계약서</dd></dl></div>' +
+      '<h2 class="h">실적 산정 규칙</h2><ul class="dots">' +
+      '<li>같은 명칭의 공연이라도 최소 6개월 시차가 있거나 프로그램 내용이 다르면 따로 인정합니다.</li>' +
+      '<li>공동 창작품은 n분의 1로 계산합니다. 문학 단행본(공동저자 수 기준), 미술 계열 전 분야, 무용(안무가에 한함)에 적용합니다.</li>' +
+      '<li>음반 1장은 음원 3곡 이상이 들어 있는 앨범을 말합니다.</li>' +
+      '<li>일반미술 전시는 신청일 기준으로 끝난 전시만 인정합니다.</li>' +
+      '<li>장기공연(연극·공연): 12주 이상 연속, 총 36회 이상 출연하면 5년 동안 3편, 8주 이상 연속, 총 24회 이상 출연하면 5년 동안 2편으로 인정합니다.</li>' +
+      '<li>방송에 16회 이상 고정 출연하면 5년 동안 3편으로 인정합니다.</li>' +
+      '<li>웹소설은 100화 이상 유료 연재 또는 완결 시 소설가 5년 동안 1편 기준을 충족합니다.</li>' +
+      '<li>40분 미만 단편영화는 2편 이상 제출하면 5년 동안 1편 기준을 충족합니다.</li></ul></div>' +
       '<div data-crit-panel="new" hidden>' +
-      '<h2 class="h" style="margin-top:0">신진예술인 기준</h2><p>역할마다 대체로 1편(회)으로 기준이 낮아집니다.</p>' +
-      '<dl class="facts"><dt>문학</dt><dd>시·수필 1편, 소설 장편 1편 또는 단편 1편, 희곡 1편, 평론 1편, 공통 작품집 1권</dd>' +
-      '<dt>미술 계열</dt><dd>개인전 1회, 단체전 1회, 기획 1회, 평론 1편 또는 1권, 도서·삽화 1편</dd>' +
-      '<dt>음악 계열</dt><dd>공연 1회, 지휘 1회, 음원 1곡, 음반 1장, 평론 1편</dd>' +
-      '<dt>무용 · 연극 · 영화 · 방송 · 공연</dt><dd>역할별 1회(편)</dd>' +
-      '<dt>만화</dt><dd>작가 1작품 또는 1권, 기술·기획 1작품, 평론 1편</dd></dl></div>' +
+      '<h2 class="h" style="margin-top:0">신진예술인 기준</h2><p>예술활동증명을 처음 받는 예술인의 최소 기준입니다(최근 2년).</p>' +
+      '<dl class="facts"><dt>문학</dt><dd>시인·수필가 1편 / 소설가 장편 1편, 단편 1편 / 희곡작가 1편 / 비평가 1편 / 공통 1권 이상</dd>' +
+      '<dt>일반미술 · 디자인/공예 · 전통미술 · 사진 · 건축</dt><dd>개인전 1회 / 단체전 1회 / 기획·기술지원 1회 / 비평가 1편 또는 1권 / 단행본(삽화 포함) 1편 또는 1권 이상</dd>' +
+      '<dt>일반음악 · 대중음악 · 국악</dt><dd>참여자 및 기획·기술지원(공연) 1편 / 지휘자 1편 / 실연자 1곡 / 작사·작곡가 1곡 / 기획·기술지원(음원) 1장 / 비평가 1편 또는 1권 이상</dd>' +
+      '<dt>무용</dt><dd>무용수 1편 / 안무가 1회 / 기획·기술지원 1편 / 비평가 1편 또는 1권 이상</dd>' +
+      '<dt>연극 · 영화</dt><dd>배우 1편 / 연출가 1회 / 극작가 1편 / 기획·기술지원(스태프) 1편 / 비평가 1편 또는 1권 이상</dd>' +
+      '<dt>방송</dt><dd>출연자(배우 등) 1편 / 출연자(MC) 1편 / 작가·연출가 1편 / 기획·기술지원(스태프) 1편 / 비평가 1편 또는 1권 이상</dd>' +
+      '<dt>공연</dt><dd>공연자 1편(회) / 기획·기술지원(스태프) 1편 / 비평가 1편 또는 1권 이상</dd>' +
+      '<dt>만화</dt><dd>작가(글, 그림 등) 1편 또는 1권 / 기술지원 및 기획 1편 / 비평가 1편 또는 1권 이상</dd></dl></div>' +
       '<div data-crit-panel="special" hidden>' +
       '<h2 class="h" style="margin-top:0">기준 외 활동</h2><dl class="facts">' +
-      '<dt>원로예술인</dt><dd>활동 기간 전체에 걸쳐 꾸준히 예술활동을 했다는 증빙</dd>' +
-      '<dt>경력단절 예술인</dt><dd>단절 전후의 활동 기록과 단절 사유 증빙. 질병은 진단서·진료비 영수증·입원 기록, 육아·임신·출산은 출생증명서·가족관계증명서·임신확인서, 가족 돌봄은 가족관계증명서와 의료 서류, 병역은 병적증명서</dd>' +
-      '<dt>특수한 활동 방식</dt><dd>발표 전까지 오랜 준비 기간이 필요했다는 증빙</dd></dl>' +
+      '<dt>원로예술인</dt><dd>전 생애에 걸쳐 예술활동을 이어왔음을 확인할 수 있는 자료(공개 발표 기준)</dd>' +
+      '<dt>경력단절 예술인</dt><dd>경력단절 전후의 예술활동 자료(공개 발표 기준)와 경력단절 증빙서류. 질병: 진단서, 진료비 수납 확인서, 입원 확인서 등 / 육아·임신·출산: 출생 증명서, 가족관계 확인서, 등본, 임신 확인서 등 / 가족 돌봄: 가족관계 확인서 또는 등본과 진단서, 입원 확인서, 진료비 수납 확인서 등 / 군입대: 병적 증명서 등</dd>' +
+      '<dt>특수한 활동 방식</dt><dd>오랜 준비 기간을 거쳐 특수한 방식으로 작품을 발표했음을 보여주는 자료(공개 발표 기준)</dd></dl>' +
       '<h2 class="h">무형유산 관련 특례</h2><dl class="facts">' +
-      '<dt>보유자 · 전승교육사</dt><dd>국가유산청이나 시·도가 발급한 공식 인정서. 보유자 후보 인정서는 인정하지 않습니다.</dd>' +
-      '<dt>이수자</dt><dd>국가유산청이나 시·도가 발급한 이수증과 분야별 자료. 개인이나 민간단체가 발급한 증명서는 인정하지 않습니다.</dd></dl>' +
+      '<dt>보유자 · 전승교육사</dt><dd>국가유산청이나 시·도가 발급한 보유자, 전승교육사(전수교육조교) 증서. 무형유산 보유자 후보 증명서는 인정하지 않습니다.</dd>' +
+      '<dt>이수자</dt><dd>국가유산청이나 시·도가 발급한 이수증과 공개 발표 기준 분야별 필수자료. 개인 또는 단체 명의로 발급된 이수증·전수증은 인정하지 않습니다.</dd></dl>' +
       '<h2 class="h">그 밖의 특례</h2><dl class="facts">' +
       '<dt>사회보험료(국민연금) 지원</dt><dd>지원 대상 기간이 포함된 서면 예술활동 계약서</dd>' +
       '<dt>산재보험 가입</dt><dd>서면 예술활동 계약서 또는 공개 발표된 예술활동 1건</dd></dl></div>' +
@@ -1661,7 +1765,7 @@ var Hero = (function () {
       '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/cs/cs01002_.jsp', '회원가입 방법 · 예술활동증명 신청 방법 매뉴얼 (원문 페이지)') + '</li></ul>' +
       '<h2 class="h">온라인 신청이 어렵다면</h2><dl class="facts">' +
       '<dt>전화 문의</dt><dd>한국예술인복지재단 02-3668-0200</dd>' +
-      '<dt>방문 예약</dt><dd>예약 상담창구 02-3668-0301. 예약하고 방문하면 더 빨리 처리할 수 있습니다.</dd>' +
+      '<dt>방문 예약</dt><dd>방문예약 상담창구 02-3668-0301. 미리 예약하고 방문하면 더 빠르고 편하게 처리할 수 있습니다. ' + extA('http://www.kawf.kr/reservation/reserv01_info.do', '방문예약 안내') + '</dd>' +
       '<dt>방문 장소</dt><dd>서울특별시 중구 한강대로 416 서울스퀘어 3층 예술인라운지</dd></dl>';
   };
   P['cert/faq/'] = function () { return faqPage('사업신청'); };
@@ -1672,22 +1776,24 @@ var Hero = (function () {
       '<div><p class="hint" style="color:var(--ink-3)">선정 인원</p><p class="big-num">18,333명</p></div></div>' +
       '<h2 class="h">사업 개요</h2><dl class="facts">' +
       '<dt>사업 기간</dt><dd>연 1회. 운영 횟수와 기간은 바뀔 수 있습니다.</dd>' +
-      '<dt>접수 기간</dt><dd>사업 공고에서 정한 기간</dd>' +
+      '<dt>접수 기간</dt><dd>매년 사업 공고에서 정한 기간 (2026년 공고일: 2026.3.20.)</dd>' +
       '<dt>신청 방법</dt><dd>예술활동준비금 시스템에서 온라인 신청 또는 우편 신청</dd>' +
       '<dt>심의</dt><dd>신청 서류 행정검토, 사회보장정보시스템 조사, 전문심의를 거쳐 지원 여부를 정합니다. 요건을 갖춘 장애예술인은 배점과 상관없이 우선 선정합니다.</dd></dl>' +
       '<h2 class="h">지원 대상</h2><ul class="dots">' +
       '<li>예술활동증명을 완료하고 창작활동을 준비 중인 현업 예술인(원로·장애예술인 포함)</li>' +
       '<li>소득인정액이 기준 중위소득의 120% 이내인 예술인. 1인 가구 기준 월 3,077,086원(2026년)</li>' +
-      '<li>소득인정액은 실제 소득과 재산의 소득환산액을 더해 계산합니다. 일반재산·자동차·금융재산은 연 4%, 고급재산은 연 100%를 월로 환산합니다.</li></ul>' +
+      '<li>소득인정액은 월 소득평가액(실제 소득)과 재산의 월 소득환산액을 더해 계산합니다. 일반재산·자동차·금융재산은 연 4%를 12로 나누어, 고급재산은 연 100%로 환산합니다.</li></ul>' +
       '<h2 class="h">참여할 수 없는 경우</h2><ul class="dots">' +
-      '<li>특례 방식으로 예술활동증명을 완료한 예술인</li>' +
-      '<li>공고일 기준 만 19세 미만인 예술인</li>' +
-      '<li>2025년 본 사업, 2026년 청년예술인 예술활동 적립계좌, 2025년 한국산업은행 후원사업에 선정된 예술인</li>' +
-      '<li>활동보고서를 내지 않았거나 보완하지 않은 예술인, 지원금 반환 대상인 예술인</li>' +
-      '<li>예술로(路) 사업 참여 제한 대상자(연속 참여 제한 대상자는 신청 가능)</li>' +
-      '<li>공고일부터 사업 종료일까지 재단에 재직 중인 임직원</li>' +
-      '<li>성희롱·성폭력 관련으로 물의를 일으킨 사람</li></ul>' +
-      '<p class="callout"><strong>중복 수혜에 주의하세요.</strong> 2026년 예술로(路) 사업이나 K-ART 청년 창작자 지원사업에 선정되면 이 사업에 중복 선정될 수 없습니다. 다른 기관 사업과의 중복 여부는 신청 전에 해당 기관에 확인하세요. 지원금을 받은 뒤에는 원칙적으로 선정을 취소할 수 없습니다.</p>' +
+      '<li>예술인 산재보험 가입, 표준계약서 사회보험료 지원, 예술인 신문고 관련 특례 또는 신진예술인 예술활동증명으로 증명을 완료한 예술인</li>' +
+      '<li>공고일(2026.3.20.) 기준 만 19세 미만인 예술인</li>' +
+      '<li>2025년 예술활동준비금지원사업 선정자</li>' +
+      '<li>2026년 청년예술인 예술활동 적립계좌 선정자</li>' +
+      '<li>2025년 한국산업은행 복지사각지대 예술인 후원사업 선정자</li>' +
+      '<li>본 사업 참여 제한자(활동보고서를 최종 제출하지 않았거나 완료하지 않은 사람, 지원금 반환 대상자 등)</li>' +
+      '<li>예술로(路) 사업 참여 제한자(연속 참여 제한자는 신청 가능)</li>' +
+      '<li>공고일(2026.3.20.)부터 사업 종료일까지 재단 임직원(시행지침 참조)</li>' +
+      '<li>성희롱·성폭력 관련으로 사회적 물의를 일으킨 사람(시행지침 참조)</li></ul>' +
+      '<p class="callout"><strong>중복 수혜에 주의하세요.</strong> 2026년 예술로(路) 사업이나 K-ART 청년 창작자 지원사업에 선정되면 이 사업에 중복 선정될 수 없습니다. 정부·지자체·광역재단의 다른 사업(예: 경기도 예술인 기회소득)도 중복 수혜가 제한될 수 있으니 신청 전에 해당 기관에 확인하세요. 지원금을 받은 뒤에는 원칙적으로 선정을 취소할 수 없습니다.</p>' +
       '<h2 class="h">공통 제출 서류</h2><ul class="dots"><li>지원신청 확약 동의서</li><li>개인정보 처리 동의서</li><li>부정수급·오지급 반납 확약 동의서</li><li>성명·주민등록번호 변경 확인서</li><li>선정이력 확인서</li></ul>' +
       '<p class="callout muted">기존 신진예술인 예술활동준비금지원사업은 ‘청년예술인 예술활동적립계좌’ 사업으로 바뀔 예정입니다. 시행 시기는 공고를 확인하세요.</p>' +
       '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/ws/ws01.jsp', '예술활동준비금 신청하기', 'btn btn-gold') + '<a class="btn btn-line" href="#/notice/list">공고 확인</a></div>';
@@ -1701,15 +1807,20 @@ var Hero = (function () {
       '<li><b>2</b><strong>서류 준비</strong><p>신청서와 첨부 서류를 준비합니다.</p></li>' +
       '<li><b>3</b><strong>제출</strong><p>이메일이나 우편으로 제출합니다.</p></li></ol>' +
       '<h2 class="h">제출 서류</h2><dl class="facts">' +
-      '<dt>신청서</dt><dd>중·소기업 사업주 산재보험 가입 신청서 1부, 보험사무 위탁서 1부</dd>' +
-      '<dt>첨부</dt><dd>신청일 기준 만료되지 않은 계약서 사본, 보험료 지원금을 받을 통장 사본</dd></dl>' +
+      '<dt>신청서</dt><dd>중소기업사업주 산재보험 가입 신청서 1부, 보험사무대행기관 사무위탁서 1부</dd>' +
+      '<dt>첨부</dt><dd>신청일 기준 계약 기간이 끝나지 않은 계약서 사본, 보험료 지원금을 받을 통장 사본</dd></dl>' +
       '<h2 class="h">문의</h2><dl class="facts">' +
-      '<dt>담당</dt><dd>예술인 산재보험 창구</dd><dt>전화</dt><dd>02-3668-0200</dd><dt>이메일</dt><dd>insure@kawf.kr</dd>' +
-      '<dt>우편</dt><dd>서울특별시 중구 한강대로 416 서울스퀘어 3층 한국예술인복지재단 예술인 산재보험 담당자 앞</dd></dl>' +
-      '<div class="actions">' + extA('https://wci.kawf.kr/', '예술인산재보험 시스템', 'btn btn-gold') + '<a class="btn btn-line" href="#/cert/apply">예술활동증명 신청하기</a></div>';
+      '<dt>담당</dt><dd>산재보험 담당자</dd><dt>전화</dt><dd>02-3668-0200</dd><dt>신청 이메일</dt><dd>insure@kawf.kr</dd>' +
+      '<dt>우편</dt><dd>서울특별시 중구 한강대로 416 서울스퀘어 3층 한국예술인복지재단 예술인산재보험 담당자 앞</dd></dl>' +
+      '<h2 class="h">더 알아보기</h2><ul class="linklist">' +
+      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/ws/ws02/ws02_01_01.jsp', '제도안내') + '</li>' +
+      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/ws/ws02/ws02_01_02.jsp', '가입방법') + '</li>' +
+      '<li>' + extA('https://www.kawfartist.kr/hkor/ws/ws02/ws02_01_03/faqUser/retrieveFaqList.do', '자주하는 질문') + '</li>' +
+      '<li>' + extA('https://www.kawfartist.kr/views/cms/hkor/ws/ws02/ws02_01_04.jsp', '설명회 신청') + '</li></ul>' +
+      '<div class="actions">' + extA('https://www.kawfartist.kr/common/download.do?fid=bbs&bbs_cd_n=1&bbs_seq_n=10&file_seq_n=1', '신청서 내려받기', 'btn btn-gold') + '<a class="btn btn-line" href="#/cert/apply">예술활동증명 신청하기</a></div>';
   };
   P['welfare/pension/'] = function () {
-    return boardTable({ rows: PENSION_NOTICES.map(function (r) { return { title: r[0], date: r[1], views: r[2] }; }), url: PENSION_URL, label: '예술인국민연금보험료지원 공지사항' });
+    return boardTable({ rows: PENSION_NOTICES.map(function (r) { return { title: r[0], date: r[1], views: r[2] }; }), url: PENSION_URL, label: '예술인국민연금보험료지원 공지사항', pinned: true });
   };
   P['welfare/pension/apply'] = function () {
     return '<div class="empty"><h2 class="sh" style="margin-top:0">2026년 신청이 마감되었습니다</h2><p>2026년 예술인 국민연금 보험료 지원사업 신청은 2026년 7월 31일 공지로 마감되었습니다. 다음 사업 공고를 확인하세요.</p>' +
@@ -1727,7 +1838,7 @@ var Hero = (function () {
       '<div class="grid2" style="margin-top:32px"><div><h2 class="sh" style="margin-top:0">상담할 수 있는 내용</h2><ul class="dots"><li>임금 미지급, 저작권 분쟁 등 예술활동 중 생긴 법적 분쟁</li><li>계약, 저작권 등 법률관계</li><li>계약서 조항의 의미가 이해되지 않을 때</li></ul></div>' +
       '<div><h2 class="sh" style="margin-top:0">지원하지 않는 내용</h2><ul class="dots"><li>계약서 전체 검토나 포괄적인 자문</li><li>소장 작성, 서류 대리 작성</li></ul></div></div>' +
       '<p class="callout">답변까지 약 <strong>14일</strong>이 걸립니다. 상담 신청은 예술인권리보장시스템에서 할 수 있습니다.</p>' +
-      '<div class="actions" style="margin:0 0 72px">' + extA('https://sinmungo.kawf.kr/', '상담하기', 'btn btn-gold') + '</div>' +
+      '<div class="actions" style="margin:0 0 72px">' + extA('https://sinmungo.kawf.kr/user/intro/lawsInfri/list.do', '상담하기', 'btn btn-gold') + '</div>' +
       '<h2 class="h">상담·컨설팅 목록</h2>' +
       '<div class="bbar"><p class="count">전체 <b>5,699</b>건 중 최근 글</p><form class="bsearch" id="legalSearch" role="search">' +
       '<label class="sr-only" for="lgCat">컨설팅 분야</label><select id="lgCat">' + cats.map(function (c) { return '<option>' + c + '</option>'; }).join('') + '</select>' +
@@ -1737,7 +1848,7 @@ var Hero = (function () {
   };
   P['rights/psy/'] = function () {
     return '<p class="lede">예술인이 활동 중에 겪는 심리적·정서적 어려움을 예방하고, 마음 건강을 돌봐 예술활동을 이어갈 수 있도록 돕습니다.</p>' +
-      '<p class="callout"><strong>2026년 신청은 예산 소진으로 조기 마감되었습니다.</strong> 신청 기간은 2026.02.24.~2026.08.31.이었습니다.</p>' +
+      '<p class="callout"><strong>2026년 신청은 예산 소진으로 조기 마감되었습니다.</strong> 신청 기간은 2026.02.24.~2026.08.31.이었으며, 집단 심리상담 프로그램도 예산 소진으로 조기 마감되었습니다.</p>' +
       '<h2 class="h">지원 내용</h2><dl class="facts">' +
       '<dt>개인 상담</dt><dd>상담과 심리검사 최대 12회. 상담료와 검사비는 지정기관에 직접 지급하며, 교통비 같은 개인 경비는 지원하지 않습니다.</dd>' +
       '<dt>집단 상담</dt><dd>작품 분석이나 창작 같은 활동 중 예술단체 구성원의 정서 안정과 협업 향상을 돕습니다.</dd></dl>' +
@@ -1749,46 +1860,45 @@ var Hero = (function () {
       '<h3 class="sh">단체</h3><ol class="flow"><li><b>1</b><strong>신청</strong><p>counseling@kawf.kr</p></li><li><b>2</b><strong>재단 접수</strong></li><li><b>3</b><strong>일정 협의</strong></li><li><b>4</b><strong>맞춤 집단 상담</strong></li></ol>' +
       '<h2 class="h">제출 서류</h2><dl class="facts"><dt>1차</dt><dd>신청서, 동의서, 사전 상담 질문지</dd><dt>2차</dt><dd>상담 진행 설문(1차 신청자에게 문자로 링크 발송)</dd></dl>' +
       '<h2 class="h">프로그램</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody>' +
-      '<tr><td>심리검사</td><td>진단 질문지, 성격·정서 검사, 종합 심층 검사</td></tr>' +
-      '<tr><td>개인 상담</td><td>예술활동·진로, 정신건강(성격, 우울, 불안, 강박), 대인관계·가족, 삶의 위기(사별, 이혼, 은퇴, 건강), 경제 문제, 자기 이해와 성장</td></tr>' +
-      '<tr><td>집단 상담</td><td>스트레스 관리, 우울·불안·사회공포 프로그램, 대인관계 향상, 부부·가족 프로그램, 자기 이해와 성장</td></tr>' +
-      '<tr><td>예방·위기 개입</td><td>위기 상담(자살 위험, 성폭력), 사후 집단 상담, 자살예방 교육(생명지킴이)</td></tr></tbody></table></div>' +
-      '<h2 class="h">문의</h2><dl class="facts"><dt>권익보호팀</dt><dd>02-3668-0200</dd></dl>' +
+      '<tr><td>심리검사</td><td>진단용 설문지 검사, 성격 및 정서검사, 심화종합심리검사 등</td></tr>' +
+      '<tr><td>개인 상담</td><td>예술활동 및 직업문제, 심리건강(우울, 불안, 강박 등), 대인관계·부부·가족문제, 생애위기사건, 경제문제, 자기이해 및 자아성장 등</td></tr>' +
+      '<tr><td>집단 상담</td><td>스트레스 대처훈련, 우울증·불안·사회공포증 프로그램, 대인관계 향상, 부부·가족상담, 자기이해 및 자아성장 프로그램 등</td></tr>' +
+      '<tr><td>예방 및 위기개입</td><td>위기개입 상담(자살위험, 성폭력 문제 등), 사후관리 집단상담, 자살예방 교육(생명지킴이 교육) 등</td></tr></tbody></table></div>' +
+      '<h2 class="h">문의</h2><dl class="facts"><dt>권리보장팀</dt><dd>02-3668-0200</dd><dt>집단 심리상담 신청</dt><dd>counseling@kawf.kr</dd></dl>' +
       '<div class="actions"><a class="btn btn-line" href="#/rights/psy/centers">지정기관 보기</a><a class="btn btn-line" href="#/notice/list">관련 공지</a></div>';
   };
   P['rights/psy/centers'] = function () {
-    var reg = [['서울', 21], ['경기', 11], ['인천', 2], ['강원', 3], ['충청', 5], ['경상', 4], ['전라', 2], ['제주', 1]];
-    return '<p class="lede">2026년 예술인 심리상담 지정기관은 전국 49곳입니다. 대부분 평일에 운영하고, 많은 기관이 전화·화상 상담도 합니다.</p>' +
-      '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>지역</th><th class="num">지정기관 수</th></tr></thead><tbody>' +
-      reg.map(function (r) { return '<tr><td>' + r[0] + '</td><td class="num">' + r[1] + '곳</td></tr>'; }).join('') + '</tbody></table></div>' +
-      '<p class="callout muted">경기 지역 경인정신건강센터는 2026년 상반기에 신청을 받지 않습니다. 기관별 주소, 연락처, 운영 시간, 비대면 상담 여부는 원문 안내에서 확인하세요.</p>' +
-      '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/no/no06/no06_05.jsp', '지정기관 상세 안내', 'btn btn-line') + '</div>';
+    var reg = ['서울', '경기', '인천', '강원', '충청', '경상', '전라', '제주'];
+    return '<p class="lede">2026년 예술인 심리상담 지정기관은 서울, 경기, 인천, 강원, 충청, 경상, 전라, 제주 권역별로 안내됩니다.</p>' +
+      '<ul class="opts" style="margin:28px 0">' + reg.map(function (r) { return '<li class="opt"><span>' + r + '</span></li>'; }).join('') + '</ul>' +
+      '<p class="callout muted">경인심리건강센터(경기 부천)는 기관 사정으로 상반기 신청을 받지 않습니다. 기관별 이름, 주소, 연락처는 원문 안내에서 확인하세요.</p>' +
+      '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/no/no06/no06_05.jsp', '지정기관 목록 보기', 'btn btn-line') + '</div>';
   };
   P['rights/sinmungo/'] = function () {
     var base = 'https://www.kawfartist.kr';
     return '<p class="lede">예술인의 예술 표현의 자유와 노동자로서의 권리를 보호하기 위한 신고·상담 창구입니다.</p>' +
-      '<h2 class="h">이용 대상</h2><p>「예술인의 지위와 권리의 보장에 관한 법률」에서 정한 예술인 권리침해로 피해를 입은 예술인, 예술단체, 예술인 조합</p>' +
-      '<h2 class="h">신고할 수 있는 권리침해</h2><ol class="flow">' +
-      '<li><b>1</b><strong>예술 창작물의 유통 방해</strong></li><li><b>2</b><strong>예술지원사업의 차별</strong></li><li><b>3</b><strong>예술지원사업의 공정성 침해</strong></li><li><b>4</b><strong>불공정행위</strong></li><li><b>5</b><strong>예술인 조합 활동 방해</strong></li></ol>' +
+      '<h2 class="h">이용 대상</h2><p>「예술인의 지위와 권리의 보장에 관한 법률」 제2조 제10호의 예술인권리침해행위로 피해를 입은 예술인, 예술단체, 예술인조합</p>' +
+      '<h2 class="h">신고할 수 있는 권리침해행위</h2><ol class="flow">' +
+      '<li><b>1</b><strong>예술 활동 성과의 전파를 방해하는 행위</strong><p>제7조 제2항</p></li><li><b>2</b><strong>예술지원사업에서 차별하는 행위</strong><p>제8조 제2항</p></li><li><b>3</b><strong>예술지원사업의 공정성을 해치는 행위</strong><p>제9조</p></li><li><b>4</b><strong>불공정 행위</strong><p>제13조</p></li><li><b>5</b><strong>예술인조합 활동을 방해하는 행위</strong><p>제14조 제4항</p></li></ol>' +
       '<h2 class="h">처리 절차</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>단계</th><th>담당</th><th>역할</th></tr></thead><tbody>' +
-      '<tr><td>1. 신고</td><td>한국예술인복지재단</td><td>권리침해, 성희롱·성폭력 피해 신고 접수</td></tr>' +
-      '<tr><td>2. 조사</td><td>문화체육관광부 예술인보호관</td><td>권리침해 조사, 분쟁 조정 지원</td></tr>' +
-      '<tr><td>3. 심의</td><td>예술인권리보장위원회</td><td>신고 사건 심의, 구제조치 요청(수사의뢰, 행정처분 등)·종결·시정명령·조정 의결</td></tr>' +
-      '<tr><td>4. 구제·사후</td><td>문화체육관광부</td><td>구제조치, 시정권고·명령, 재정지원 중단, 불이익 조치 금지</td></tr></tbody></table></div>' +
+      '<tr><td>신고</td><td>한국예술인복지재단</td><td>권리침해 및 성희롱·성폭력 피해 신고 접수</td></tr>' +
+      '<tr><td>조사</td><td>문화체육관광부 예술인보호관</td><td>권리침해행위 조사, 분쟁조정 지원</td></tr>' +
+      '<tr><td>심의·의결</td><td>예술인권리보장위원회</td><td>신고사건 심의, 구제조치 요청 및 종결 의결, 시정명령 요청, 분쟁조정</td></tr>' +
+      '<tr><td>구제 및 사후지원</td><td>문화체육관광부</td><td>구제조치, 시정권고, 시정명령, 재정지원 중단, 불이익조치 금지</td></tr></tbody></table></div>' +
       '<h2 class="h">신청하기</h2><ul class="linklist">' +
-      '<li>' + extA(base + '/hkor/no/no05/no05_02/consultUser/list.do?menuCate=cu999', '권리침해 상담 신청') + '</li>' +
-      '<li>' + extA(base + '/hkor/no/no05/no05_03/artReportUser/write.do', '권리침해 신고') + '</li>' +
-      '<li>' + extA(base + '/views/cms/hkor/no/no05/no05_04.jsp', '서면계약 위반 안내') + '</li>' +
+      '<li>' + extA(base + '/hkor/no/no05/no05_02/consultUser/list.do?menuCate=cu999', '권리침해행위 상담') + '</li>' +
+      '<li>' + extA(base + '/hkor/no/no05/no05_03/artReportUser/write.do', '권리침해행위 신고하기') + '</li>' +
+      '<li>' + extA(base + '/views/cms/hkor/no/no05/no05_04.jsp', '서면계약 위반신고 안내') + '</li>' +
       '<li>' + extA(base + '/hkor/no/no05/no05_05/consultUser/list.do?menuCate=cu909', '서면계약 상담') + '</li>' +
-      '<li>' + extA(base + '/hkor/no/no05/no05_07/artWriteReportUser/write.do', '서면계약 위반 신고') + '</li></ul>' +
-      '<div class="actions">' + extA('https://sinmungo.kawf.kr/', '예술인권리보장시스템', 'btn btn-gold') + extA('https://www.youtube.com/playlist?list=PLjuQPZVxt9q74OPsLWojB49PfbCeQDErr', '불공정행위 교육자료', 'btn btn-line') + '</div>' +
+      '<li>' + extA(base + '/hkor/no/no05/no05_07/artWriteReportUser/write.do', '서면계약 위반신고') + '</li></ul>' +
+      '<div class="actions">' + extA('https://sinmungo.kawf.kr/user/intro/lawsInfri/list.do', '권리침해행위 상담 신청하기', 'btn btn-gold') + extA('https://sinmungo.kawf.kr/user/intro/artInfri/list.do', '권리침해행위 신고하기', 'btn btn-line') + '</div>' +
       '<h2 class="h">문의</h2><dl class="facts"><dt>전화</dt><dd>02-3668-0200</dd><dt>이메일</dt><dd>kawf@kawf.kr</dd></dl>';
   };
   P['rights/harass/'] = function () {
     return '<p class="lede">성희롱·성폭력 피해로 어려움을 겪는 예술인을 보호하고 지원해, 성평등한 예술 환경을 만듭니다.</p>' +
       '<p class="callout"><strong>상담 내용과 개인정보는 비밀이 보장됩니다.</strong> 상담 후 신고인이 원하는 지원을 연계하며, 원하면 국가인권위원회나 해바라기센터 등으로 연결합니다.</p>' +
       '<h2 class="h">신고할 수 있는 사람</h2><p>「예술인의 지위와 권리의 보장에 관한 법률」 제16조 제2항·제3항을 위반한 성희롱·성폭력의 피해자, 또는 그 사실을 알게 된 사람. 피해자가 아닌 사람이 신고하면 피해자의 동의를 받은 뒤 조사합니다.</p>' +
-      '<h2 class="h">지원 대상</h2><p>같은 법 제2조 제2호에 해당하는 예술인</p>' +
+      '<h2 class="h">지원 대상</h2><p>같은 법 제2조 제2호에 해당하는 예술인. 문화예술 분야에서 창작, 실연, 기술지원 등의 활동을 업으로 하는 사람과, 예술활동을 업으로 하기 위해 필요한 교육·훈련을 받고 있거나 받은 사람을 포함합니다.</p>' +
       '<h2 class="h">성희롱·성폭력이란</h2><ul class="dots"><li>성적 굴욕감이나 혐오감을 주는 말과 행동, 요구</li><li>성적 요구를 거절했다는 이유로 주는 불이익</li><li>성폭력범죄에 해당하는 행위</li></ul>' +
       '<h2 class="h">처리 절차</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>단계</th><th>담당</th><th>역할</th></tr></thead><tbody>' +
       '<tr><td>1. 신고</td><td>한국예술인복지재단</td><td>피해 신고 접수</td></tr>' +
@@ -1797,30 +1907,30 @@ var Hero = (function () {
       '<tr><td>4. 구제·사후</td><td>문화체육관광부 · 권리보장센터</td><td>수사의뢰·행정처분 등 구제조치, 시정권고·명령, 재정지원 중단, 불이익 금지 / 심리상담, 의료, 민·형사 소송 지원과 사후 관리</td></tr></tbody></table></div>' +
       '<div class="actions">' + extA('https://sinmungo.kawf.kr/user/intro/artDamageCounsel/list.do', '상담 신청하기', 'btn btn-gold') + extA('https://sinmungo.kawf.kr/user/intro/artDamageReport/list.do', '신고하기', 'btn btn-line') + '</div>' +
       '<h2 class="h">연락처</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>기관</th><th>전화</th></tr></thead><tbody>' +
-      '<tr><td>예술인 성폭력 피해 문의</td><td class="num">02-3668-0266, 1670-5678(3번)</td></tr>' +
-      '<tr><td>여성긴급전화(24시간)</td><td class="num">1366</td></tr><tr><td>대한법률구조공단</td><td class="num">132</td></tr>' +
-      '<tr><td>대한변협법률구조재단</td><td class="num">02-3476-6515</td></tr><tr><td>한국성폭력위기센터</td><td class="num">02-833-9284</td></tr>' +
-      '<tr><td>범죄피해자지원센터</td><td class="num">1577-1295</td></tr><tr><td>지방경찰청 청문감사담당관실 CARE팀</td><td class="num">1566-0112</td></tr></tbody></table></div>' +
+      '<tr><td>한국예술인복지재단 (문의)</td><td class="num">02-3668-0266, 02-1670-5678(3번)</td></tr>' +
+      '<tr><td>여성긴급전화 (24시간, 365일)</td><td class="num">지역번호 없이 1366</td></tr><tr><td>대한법률구조공단 (무료 법률구조)</td><td class="num">132</td></tr>' +
+      '<tr><td>대한변협법률구조재단 (무료 법률구조)</td><td class="num">02-3476-6515</td></tr><tr><td>한국성폭력위기센터 (피해자 지원)</td><td class="num">02-833-9284</td></tr>' +
+      '<tr><td>범죄피해자지원센터 (심리회복 연계: 스마일센터)</td><td class="num">1577-1295</td></tr><tr><td>지방경찰청 청문감사담당관실 CARE팀 (의료 지원·감정)</td><td class="num">1566-0112</td></tr></tbody></table></div>' +
       '<p class="hint" style="margin-top:12px">성폭력 피해자 전담 의료기관과 보호시설은 ' + extA('http://www.mogef.go.kr', '여성가족부 누리집') + '에서 확인할 수 있습니다.</p>';
   };
   P['rights/contract/'] = function () {
     var C = [
-      ['미술', '12종 · 2022.2.18. 일부개정', ['전시 및 판매위탁계약서', '전속계약서(작가)', '판매위탁계약서(작가와 화랑 등)', '판매위탁계약서(소장자와 화랑 등)', '매매계약서(매수인과 화랑 등)', '매매계약서(매수인과 작가)', '전시계약서', '전시기획계약서', '대관계약서', '모델계약서', '건축물 미술작품 제작계약서', '공동창작계약서', '미술창작대가 지급기준'], '참고: 2022 알기 쉬운 미술 분야 표준계약서 가이드북'],
+      ['미술', '12종 · 2022.2.18. 일부개정', ['전시 및 판매위탁계약서', '전속계약서(작가)', '판매위탁계약서(작가와 화랑 등)', '판매위탁계약서(소장자와 화랑 등)', '매매계약서(매수인과 화랑 등)', '매매계약서(매수인과 작가)', '전시계약서', '전시기획계약서', '대관계약서', '모델계약서', '건축물 미술작품 제작계약서', '공동창작계약서', '미술창작대가 지급기준'], '참고: 2022 알기 쉬운 미술 분야 표준계약서 가이드북(2022.5.)'],
       ['공예', '5종 · 2021.7.1. 제정', ['전시 및 판매위탁계약서', '판매위탁계약서', '판매계약서', '공예품 디자인 개발 용역계약서', '대관계약서']],
-      ['공연예술', '5종 · 2022.8.10. 제정', ['공연예술 출연계약서', '공연예술 창작계약서', '공연예술 기술지원 표준근로계약서', '공연예술 기술지원 표준용역계약서', '공연예술 대관계약서'], '참고: 기술지원 표준근로·용역계약서 해설서, 표준대관계약서 해설서, 동영상강좌(kawf.edukocca.or.kr)'],
-      ['만화', '8종 · 2024.6.13. 개정', ['출판계약서', '전자책(e-book) 발행계약서', '웹툰 연재계약서', '매니지먼트 위임 계약서', '만화 저작물 대리중개 계약서', '공동 저작 계약서', '기획만화계약서', '2차적저작물작성권 이용허락 계약서', '2차적저작물작성권 양도계약서'], '참고: 만화분야 표준계약서 해설집(2025년 6월, 2019년 12월)'],
+      ['공연예술', '5종 · 2022.8.10. 제정', ['공연예술 출연계약서', '공연예술 창작계약서', '공연예술 기술지원 표준근로계약서', '공연예술 기술지원 표준용역계약서', '공연예술 대관계약서'], '참고: 공연예술 기술지원 표준근로계약서·표준용역계약서 해설서(2019.8.), 공연예술 표준대관계약서 해설서(2022.8.), 동영상강좌 「공연예술 표준계약의 이해」(2022.6.)'],
+      ['만화', '8종 · 2024.6.13. 개정', ['출판계약서', '전자책(e-book) 발행계약서', '웹툰 연재계약서', '매니지먼트 위임 계약서', '만화 저작물 대리중개 계약서', '공동 저작 계약서', '기획만화계약서', '2차적저작물작성권 이용허락 계약서', '2차적저작물작성권 양도계약서'], '참고: 만화분야 표준계약서 해설집(2025.6.), 만화분야 표준계약서 해설집(2019.12.)'],
       ['애니메이션', '4종 · 2019.8.7. 제정', ['애니메이션 방영권 표준계약서', '애니메이션 제작 투자 표준계약서', '애니메이션 시나리오 개발 표준계약서', '애니메이션 음악 개발 표준계약서']],
-      ['대중문화', '방송·영상 출연 3종(2025.7.31. 개정) 외', ['방송·영상 출연표준계약서(음악·드라마·비드라마)', '대중문화예술인 표준전속계약서(가수 중심·연기자 중심)', '대중문화예술분야 연습생 표준계약서(2026.1.1. 개정)', '청소년 대중문화예술인(또는 연습생) 표준 부속합의서(2026.1.1. 개정)'], '참고: 알기쉬운 방송분야 표준계약서 리플릿'],
-      ['방송', '6종 · 2021.10.27. 제정', ['방송프로그램 제작 표준계약서', '방송프로그램 방영권 구매 표준계약서', '방송프로그램 제작스태프 표준근로계약서', '방송프로그램 제작스태프 표준하도급계약서', '방송프로그램 제작스태프 표준업무위탁계약서', '방송작가 집필 표준계약서'], '참고: 방송분야 표준계약서 사용지침'],
-      ['영화', '근로 1종 · 시나리오 4종 · 상영 2종 · 투자 1종', ['영화산업 근로표준계약서(2024.5.25. 개정)', '표준 영화화 권리 이용허락 계약서', '표준 영화화 권리 양도 계약서', '표준 각본 계약서', '표준 각색 계약서', '영화상영기본계약서·개별상영계약서', '영화상영계약서', '영화 제작 및 투자, 수익 분배에 관한 계약서'], '참고: 영화산업 표준보수지침(2025.10.1. 제정)'],
-      ['출판', '10종 · 2021.2.22. 제정', ['출판권 설정계약서', '전자출판 배타적발행권 설정계약서', '전자출판 배타적발행권 및 출판권 설정계약서', '저작재산권 양도계약서', '저작물 이용계약서(국내용)', '저작물 이용계약서(해외용)', '오디오북 배타적발행권 설정계약서', '오디오북 유통 계약서', '오디오북 제작 계약서', '오디오북 저작인접권 이용허락 계약서']],
+      ['대중문화', '방송·영상 출연 3종 · 표준전속 2종 · 연습생 1종 · 부속합의서 1종', ['대중문화예술인 방송·영상 출연표준계약서: 음악분야, 드라마분야, 비드라마분야 (3종, 2025.7.31. 개정)', '대중문화예술인(가수중심) 표준전속계약서, 대중문화예술인(연기자중심) 표준전속계약서 (2종, 2018.11.28. 제정)', '대중문화예술분야 연습생 표준계약서 (1종, 2026.1.1. 개정)', '청소년 대중문화예술인(또는 연습생) 표준 부속합의서 (1종, 2026.1.1. 개정)'], '참고: 알기쉬운 방송분야 표준계약서 리플릿(2020.5.)'],
+      ['방송', '6종 · 2021.10.27. 제정', ['방송프로그램 제작 표준계약서', '방송프로그램 방영권 구매 표준계약서', '방송프로그램 제작스태프 표준근로계약서', '방송프로그램 제작스태프 표준하도급계약서', '방송프로그램 제작스태프 표준업무위탁계약서', '방송작가 집필 표준계약서'], '참고: 알기쉬운 방송분야 표준계약서 리플릿(2020.5.), 방송분야 표준계약서 사용지침(2019.6.)'],
+      ['영화', '근로 1종 · 시나리오 4종 · 상영 2종 · 투자 1종', ['영화산업 근로표준계약서 (2024.5.25. 개정)', '영화 시나리오 표준계약서: 표준 영화화 권리 이용허락 계약서, 표준 영화화 권리 양도 계약서, 표준 각본 계약서, 표준 각색 계약서 (2015.10.20. 개정)', '영화 상영 표준계약서: 영화상영기본계약서·개별상영계약서, 영화상영계약서 (2014.10.1. 발표)', '영화 투자 표준계약서: 영화 제작 및 투자, 수익 분배에 관한 계약서 (2014.10.30. 발표)'], '참고: 영화산업 근로표준계약서 해설집(2024), 시나리오 표준계약서 주요 조항 해설(2015.10.), 영화산업 표준보수지침(2025.10.1. 제정)'],
+      ['출판', '10종 · 2021.2.22. 제정', ['출판권 설정계약서', '전자출판 배타적발행권 설정계약서', '전자출판 배타적발행권 및 출판권 설정계약서', '저작재산권 양도계약서', '저작물 이용계약서(국내용)', '저작물 이용계약서(해외용)', '오디오북 배타적발행권 설정계약서', '오디오북 유통 계약서', '오디오북 제작 계약서', '오디오북 저작인접권 이용허락 계약서'], '참고: 출판분야 표준계약서 활용 가이드 리플릿(2021.2.), 출판분야 표준계약서 해설(2021.2.), 동영상강좌 「출판계약, 이것만은 꼭 확인하자!」(2014.1., 한국저작권위원회)'],
       ['저작재산권', '4종 · 2021.9.6. 제정', ['저작재산권 전부에 대한 양도계약서', '저작재산권 일부에 대한 양도계약서', '저작재산권 독점적 이용허락 계약서', '저작재산권 비독점적 이용허락 계약서']]
     ];
     return '<p class="lede">표준계약서는 공정한 계약 문화를 만들고 예술인의 기본 권익을 지키기 위한 표준 양식입니다. 분쟁이 생겼을 때 판단 근거가 됩니다.</p>' +
       '<ul class="dots"><li>무계약·구두계약 관행과 계약 지식 부족을 줄이기 위해 분야별 표준계약서를 개발해 보급합니다.</li><li>표준계약 매뉴얼을 보급하고 계약 관련 컨설팅을 제공합니다.</li></ul>' +
       '<h2 class="h">분야별 표준계약서</h2><div class="acc">' + C.map(function (c) {
         return '<details><summary>' + c[0] + ' <small>' + c[1] + '</small></summary><div class="a"><ul class="dots">' + c[2].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' + (c[3] ? '<p class="hint" style="margin-top:12px">' + c[3] + '</p>' : '') + '</div></details>';
-      }).join('') + '<details><summary>표준근로계약서 <small>고용노동부 7종</small></summary><div class="a"><p>고용노동부 정책자료 페이지에서 받을 수 있습니다.</p></div></details></div>' +
+      }).join('') + '<details><summary>표준근로계약서 <small>7종 · 2019년 7월 게시</small></summary><div class="a"><p>고용노동부 표준근로계약서 자료로 연결됩니다.</p></div></details></div>' +
       '<p class="callout muted">계약서 파일(HWP)과 해설 자료(PDF)는 원문 페이지에서 내려받을 수 있습니다. 실제 계약에 쓰기 전에는 원문과 전문가 상담을 확인하세요.</p>' +
       '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/no/cs02_.jsp', '표준계약서 내려받기', 'btn btn-gold') + '<a class="btn btn-line" href="#/rights/legal">계약 상담하기</a></div>';
   };
@@ -1828,19 +1938,19 @@ var Hero = (function () {
     return '<p class="lede">예술인은 직업적 권리를 지키고 높이기 위해 조합을 만들 수 있습니다.</p>' +
       '<h2 class="h">결성 대상</h2><p>사업자와 계약을 맺었거나 맺으려는 예술인 2명 이상</p>' +
       '<h2 class="h">제출 서류</h2><ul class="dots"><li>예술인 조합 결성신고서 1부</li><li>「예술인의 지위와 권리의 보장에 관한 법률」 제14조 제1항 전단의 요건을 갖췄음을 증명하는 서류 1부</li></ul>' +
-      '<h2 class="h">신고서에 적을 내용</h2><ol class="dots"><li>구체적인 예술활동 명칭</li><li>예술사업자 또는 예술지원기관 명칭</li><li>예술인 조합 명칭</li><li>송달 주소</li><li>대표자 이름과 연락처</li><li>존속 기간</li><li>조합원 수</li></ol>' +
-      '<h2 class="h">처리 절차 · 약 5일</h2><ol class="flow"><li><b>1</b><strong>신고서 작성</strong><p>신청인</p></li><li><b>2</b><strong>접수·검토</strong><p>한국예술인복지재단</p></li><li><b>3</b><strong>신고증 발급</strong><p>문화체육관광부</p></li></ol>' +
-      '<ul class="dots" style="margin-top:24px"><li>기재 사항이 빠지면 최대 3주 안에 보완을 요청할 수 있습니다.</li><li>조합이 해산하거나 신고 사항이 바뀌면 대표자는 그 사유가 생긴 날부터 3주 안에 정해진 서식으로 신고해야 합니다.</li></ul>' +
-      '<div class="actions">' + extA('https://www.kawfartist.kr/views/cms/hkor/no/no08/no08_01.jsp', '결성신고서 내려받기 (HWP)', 'btn btn-line') + extA('https://www.kawfartist.kr/views/cms/hkor/no/no08/no08_01.jsp', '예술인 조합 결성 신고하기', 'btn btn-gold') + '</div>';
+      '<h2 class="h">신고서에 적을 내용</h2><ol class="dots"><li>구체적인 예술활동 명칭</li><li>구체적인 예술사업자 또는 예술지원기관 명칭</li><li>예술인조합 명칭</li><li>송달 주소</li><li>대표자 성명과 연락처</li><li>기한</li><li>조합원 수</li></ol>' +
+      '<h2 class="h">처리 절차 · 총 5일</h2><ol class="flow"><li><b>1</b><strong>신고서 작성</strong><p>신고인</p></li><li><b>2</b><strong>접수</strong><p>한국예술인복지재단</p></li><li><b>3</b><strong>검토·확인</strong><p>문화체육관광부</p></li><li><b>4</b><strong>신고증 발급</strong></li></ol>' +
+      '<ul class="dots" style="margin-top:24px"><li>기재 사항이 빠지면 최대 3주 이내의 기간을 정해 보완을 요청할 수 있습니다.</li><li>조합이 해산하거나 신고 사항이 바뀌면 대표자는 그 사유가 생긴 날부터 3주 이내에 결성(변경)신고서를 제출해야 합니다.</li></ul>' +
+      '<div class="actions">' + extA('https://sinmungo.kawf.kr/user/intro/artCombiIntro/list.do', '예술인조합 결성 신고하기', 'btn btn-gold') + extA('https://www.kawfartist.kr/common/download.do?fid=bbs&bbs_cd_n=1&bbs_seq_n=57&file_seq_n=2', '결성신고서 내려받기 (HWP)', 'btn btn-line') + '</div>';
   };
 
   /* ======================= 알림 ======================= */
   function boardTable(o) {
-    return '<div class="bbar"><p class="count">전체 <b>' + o.rows.length + '</b>건</p><form class="bsearch" data-board role="search">' +
+    return '<div class="bbar"><p class="count">전체 <b>' + (o.total || o.rows.length).toLocaleString('ko-KR') + '</b>건' + (o.total ? ' 중 최근 ' + o.rows.length + '건' : '') + '</p><form class="bsearch" data-board role="search">' +
       '<label class="sr-only" for="bq">검색어</label><input type="search" id="bq" placeholder="제목 검색"><button class="btn btn-line btn-sm" type="submit">검색</button></form></div>' +
       '<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">' + esc(o.label) + '</caption><thead><tr><th class="num">번호</th><th>제목</th><th class="num">등록일</th><th class="num">조회수</th>' + (o.files ? '<th class="num">첨부</th>' : '') + '</tr></thead><tbody data-rows>' +
       o.rows.map(function (r, i) {
-        return '<tr class="link" data-title="' + esc(r.title) + '" data-href="' + (o.view ? o.view + i : '') + '"><td class="num">' + (o.rows.length - i) + '</td><td>' +
+        return '<tr class="link" data-title="' + esc(r.title) + '" data-href="' + (o.view ? o.view + i : '') + '"><td class="num">' + (o.pinned ? '공지' : (o.rows.length - i)) + '</td><td>' +
           (o.view ? '<a href="' + o.view + i + '">' + esc(r.title) + '</a>' : extA(o.url, esc(r.title))) +
           '</td><td class="num">' + r.date + '</td><td class="num">' + r.views.toLocaleString('ko-KR') + '</td>' + (o.files ? '<td class="num">' + (r.files ? r.files + '개' : '-') + '</td>' : '') + '</tr>';
       }).join('') + '</tbody></table></div>' +
@@ -1854,7 +1964,7 @@ var Hero = (function () {
         '<div class="callout muted">본문과 첨부파일은 원문 공지사항에서 확인할 수 있습니다.</div>' +
         '<div class="actions">' + extA(NOTICE_URL, '원문 공지 보기', 'btn btn-gold') + '<a class="btn btn-line" href="#/notice/list">목록</a></div></article>';
     }
-    return boardTable({ rows: NOTICES.map(function (r) { return { title: r[0], date: r[1], views: r[2], files: r[3] }; }), url: NOTICE_URL, view: '#/notice/list?view=', files: true, label: '공지사항', more: '최근 10건입니다. ' });
+    return boardTable({ rows: NOTICES.map(function (r) { return { title: r[0], date: r[1], views: r[2], files: r[3] }; }), url: NOTICE_URL, view: '#/notice/list?view=', files: true, label: '공지사항', total: NOTICE_TOTAL, pinned: true });
   };
   function faqPage(initial) {
     var cats = ['전체', '사업소개', '사업신청', '사업내용', '이용문의'];
@@ -2309,11 +2419,11 @@ var Hero = (function () {
   };
   P['guide/first/'] = function () {
     var C = [
-      ['내 활동 정보', '여러 활동 정보를 한눈에 확인합니다.', '#/my/info'],
-      ['프로필 등록', '나만의 이력을 기록합니다.', '#/my/history'],
-      ['예술활동증명', '예술인 복지 혜택을 받기 위한 첫 단계입니다.', '#/cert/guide'],
+      ['나의 활동 정보', '나의 활동 정보를 한눈에 확인합니다.', '#/my/info'],
+      ['프로필 등록', '나만의 프로필을 작성합니다.', '#/my/history'],
+      ['예술활동증명', '예술인 복지 혜택을 받을 수 있습니다.', '#/cert/guide'],
       ['복지지원', '재난, 질병, 경제적 어려움을 겪는 예술인을 지원합니다.', '#/welfare/prep'],
-      ['공지와 상담', '재단 복지사업 소식과 권익보호 상담을 안내합니다.', '#/notice/list']
+      ['알림/상담', '최신 복지사업 소식과 권익보호 상담 서비스를 안내합니다.', '#/notice/list']
     ];
     return '<p class="lede">예술인경력정보시스템이 처음이라면 회원가입부터 시작하세요. 가입 후 예술활동증명을 신청하면 재단의 복지사업에 참여할 수 있습니다.</p>' +
       '<ol class="flow" style="margin-top:40px"><li><b>1</b><strong>회원가입</strong><p>약관동의와 본인인증</p></li><li><b>2</b><strong>예술활동증명 신청</strong><p>신청 종류와 실적 입력</p></li><li><b>3</b><strong>심의·결과 확인</strong><p>신청내역에서 확인</p></li><li><b>4</b><strong>복지사업 신청</strong><p>준비금, 보험료 지원 등</p></li></ol>' +
@@ -2376,6 +2486,7 @@ var Hero = (function () {
   }
   function showHome(q) {
     lastKey = '';
+    markSection(null);
     document.title = '예술인경력정보시스템 | KAWF ARTIST';
     viewPage.hidden = true; viewPage.innerHTML = '';
     var wasHidden = viewHome.hidden;
@@ -2383,7 +2494,14 @@ var Hero = (function () {
     if (wasHidden) { window.scrollTo(0, 0); Hero.show(); }
     hd.classList.toggle('solid', $('#top').getBoundingClientRect().bottom <= 90);
   }
+  function markSection(id) {
+    $$('#gnb > .gi > a').forEach(function (a) {
+      var on = !!id && a.getAttribute('href').indexOf('#/' + id + '/') === 0;
+      if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+  }
   function showPage(html, title, sameView) {
+    markSection((parse().parts || [])[0]);
     if (!viewHome.hidden) { viewHome.hidden = true; Hero.hide(); }
     viewPage.hidden = false;
     viewPage.innerHTML = html;

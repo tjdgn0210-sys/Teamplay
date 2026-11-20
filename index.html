@@ -300,9 +300,6 @@
   .hero.static .pin { position: relative; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .reveal { animation: none; opacity: 1; transform: none; }
-    .scroll-cue i::after { animation: none; top: 18px; }
-    .hero.settled .apply-btn::after { animation: none; }
     *, *::before, *::after { transition-duration: .01ms !important; }
   }
   /* ======================= 하위 페이지 공통 ======================= */
@@ -787,7 +784,8 @@
    스크롤하면 인물과 '인생은 짧다'가 금빛 먼지로 흩어지고, 그 먼지가 '기록은 남는다'로 다시 모임 */
 var Hero = (function () {
   'use strict';
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 시스템의 '동작 줄이기' 설정과 관계없이 스크롤 연출을 항상 실행
+  var reduce = false;
   var hero = document.getElementById('top');
   var pin = document.getElementById('pin');
   var plate = document.getElementById('plate');

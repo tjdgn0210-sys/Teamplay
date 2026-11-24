@@ -6,6 +6,7 @@
 <title>예술인경력정보시스템 | KAWF ARTIST</title>
 <meta name="description" content="예술활동증명 신청과 예술인 복지지원, 권익보호 정보를 한곳에서 확인하세요.">
 <script>
+  document.documentElement.classList.add('boot');   // 첫 경로가 정해질 때까지 헤더 색 전환 효과 끔
   // 다크/화이트 모드: 저장된 선택을 첫 화면 전에 적용. 기본은 화이트
   (function () { var t = null; try { t = localStorage.getItem('kawf_theme'); } catch (e) {} if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); })();
 </script>
@@ -832,10 +833,19 @@
   .theme-btn .ico-sun { display: none; }
   html[data-theme="dark"] .theme-btn .ico-sun { display: block; }
   html[data-theme="dark"] .theme-btn .ico-moon { display: none; }
+  /* 상단 메뉴: 페이지를 처음 열거나 새로고침하면 4개 항목이 위에서 살짝 내려오며 빠르게 차례로 나타남 */
+  @keyframes gnbIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+  .gnb > .gi { animation: gnbIn .42s cubic-bezier(.2,.7,.2,1) both; }
+  .gnb > .gi:nth-child(1) { animation-delay: .12s; }
+  .gnb > .gi:nth-child(2) { animation-delay: .2s; }
+  .gnb > .gi:nth-child(3) { animation-delay: .28s; }
+  .gnb > .gi:nth-child(4) { animation-delay: .36s; }
+  @media (prefers-reduced-motion: reduce) { .gnb > .gi { animation: none; } }
+  html.boot .site-header, html.boot .site-header * { transition: none !important; }
 </style>
 
 </head>
-<body>
+<body class="home">
 <a class="skip" href="#main" id="skipLink">본문 바로가기</a>
 
 <header class="site-header" id="hd">
@@ -3380,6 +3390,7 @@ var Hero = (function () {
   renderHomeLists();
   window.addEventListener('hashchange', render);
   render();
+  requestAnimationFrame(function () { requestAnimationFrame(function () { document.documentElement.classList.remove('boot'); }); });
 })();
 
 </script>

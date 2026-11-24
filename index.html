@@ -1089,7 +1089,6 @@ var Hero = (function () {
   var TINT = [
     [q$('#hero-title'), '#FFF6E6', '#1C1612'],
     [q$('#hero-title .t-soft'), '#E3D3B6', '#1C1612'],
-    [q$('#hero-title .rv .art'), '#FFC41F', '#1C1612'],
     [q$('#leadA, #leadB'), '#DAD5CC', '#4D443B'],
     [q$('#heroCta .cta-sub'), '#9A9187', '#6E6458'],
     [q$('#heroCta .btn-text, #top .explore'), '#F2F0EA', '#1C1612', true]
@@ -1097,6 +1096,7 @@ var Hero = (function () {
   var heroLit = false;
   var lineRecord = document.getElementById('lineRecord');
   var recChars = Array.prototype.slice.call(lineRecord.querySelectorAll('.ch'));
+  var artChars = q$('#hero-title .rv .art');
   var leadA = document.getElementById('leadA');
   var cta = document.getElementById('heroCta');
   var heroBody = document.getElementById('heroBody');
@@ -1197,7 +1197,7 @@ var Hero = (function () {
       if (!txt.trim()) continue;
       var cs = getComputedStyle(node.parentElement);
       ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
-      ctx.fillStyle = cs.color;
+      ctx.fillStyle = node.parentElement.classList.contains('art') ? (isDark() ? '#FFF6E6' : '#1C1612') : cs.color;
       var m = ctx.measureText(txt), asc = m.fontBoundingBoxAscent, desc = m.fontBoundingBoxDescent;
       for (var ci = 0; ci < txt.length; ci++) {
         if (!txt[ci].trim()) continue;
@@ -1766,7 +1766,7 @@ var Hero = (function () {
     drawAmb(L, time);
     drawSmoke(hf, F, H, time, L);
     // 마지막 구간: 빙글 돌며 작아지고 흐려지며 글자 가운데로 빨려 듦
-    var pe = sstep(0.5, 1, hf);
+    var pe = sstep(0.5, 0.9, hf);
     var sc = 1 - 0.9 * Math.pow(pe, 1.3);
     H.rot += 220 * Math.pow(pe, 2.2);
     H.rx += 25 * pe;
@@ -1778,14 +1778,12 @@ var Hero = (function () {
     litHat.style.width = H.w.toFixed(1) + 'px'; litHat.style.height = hhp.toFixed(1) + 'px';
     litHat.style.transformOrigin = oxp.toFixed(1) + 'px ' + oyc.toFixed(1) + 'px';
     litHat.style.transform = 'translate3d(' + (H.x - oxp).toFixed(2) + 'px,' + (H.y - oyc - cyOff).toFixed(2) + 'px,0)' + tf;
-    var hop = (narrow ? 0.6 + 0.4 * smoother(hf) : 1) * (1 - sstep(0.86, 0.985, hf));
+    var hop = (narrow ? 0.6 + 0.4 * smoother(hf) : 1) * (1 - sstep(0.8, 0.9, hf));
     litHat.style.opacity = hop.toFixed(3);
     litHat.style.visibility = hop < 0.005 ? 'hidden' : 'visible';
     litHat.style.filter = pe > 0.5 ? 'blur(' + (sstep(0.5, 1, pe) * 1.5).toFixed(2) + 'px)' : 'none';
     hatShadow.style.visibility = 'hidden';
-    // 모자를 삼킨 '경력'이 잠깐 금빛으로 빛났다가 가라앉음
-    var glow = sstep(0.84, 0.95, hf) * (1 - sstep(0.95, 1, hf));
-    for (var gi = 0; gi < 2; gi++) recChars[gi].style.textShadow = glow > 0.01 ? '0 0 ' + (glow * 18).toFixed(1) + 'px rgba(255,196,31,' + (glow * 0.9).toFixed(3) + ')' : 'none';
+    // (글자색은 아래에서 그라데이션으로 바뀜. 글자 뒤로 번지는 빛 효과는 쓰지 않음)
     // 글자색도 배경 밝기에 맞춰 연속으로 바뀜
     var T = sstep(0.3, 0.62, L);
     for (var ti = 0; ti < TINT.length; ti++) {
@@ -1793,6 +1791,30 @@ var Hero = (function () {
       for (var tj = 0; tj < TINT[ti][0].length; tj++) {
         TINT[ti][0][tj].style.color = tc;
         if (TINT[ti][3]) TINT[ti][0][tj].style.borderColor = tc;
+      }
+    }
+    // '경력': 먼지가 모여 글자가 될 때는 먹색(다크 모드에서는 다른 글자와 같은 밝은 색).
+    //  모자가 들어간 자리에서부터 금색(#FFC624)이 글자 안에 번져 퍼지듯 그라데이션으로 바뀜(글자 안쪽만 칠함)
+    var gm = sstep(0.87, 0.99, hf), kBase = isDark() ? '#FFF6E6' : '#1C1612', KG = '#FFC624';
+    if (gm <= 0.001 || gm >= 0.999) {
+      for (var ki = 0; ki < artChars.length; ki++) {
+        var ce = artChars[ki].style;
+        ce.backgroundImage = ''; ce.webkitBackgroundClip = ''; ce.backgroundClip = ''; ce.webkitTextFillColor = '';
+        ce.color = gm >= 0.999 ? KG : kBase;
+      }
+    } else {
+      var pr2 = pin.getBoundingClientRect(), ra = artChars[0].getBoundingClientRect(), rb = artChars[artChars.length - 1].getBoundingClientRect();
+      var gx = ra.left - pr2.left, gy = Math.min(ra.top, rb.top) - pr2.top, gw = rb.right - ra.left, gh = Math.max(ra.bottom, rb.bottom) - Math.min(ra.top, rb.top);
+      var ex = F.tx - gx, ey = F.ty - gy, R = Math.hypot(Math.max(ex, gw - ex), Math.max(ey, gh - ey)) * 1.15 * smoother(gm) + 1;
+      var grad = 'radial-gradient(circle ' + R.toFixed(1) + 'px at ' + ex.toFixed(1) + 'px ' + ey.toFixed(1) + 'px, ' + KG + ' 0%, ' + KG + ' 55%, #FFE08A 72%, ' + kBase + ' 100%)';
+      for (var kj = 0; kj < artChars.length; kj++) {
+        var r3 = artChars[kj].getBoundingClientRect(), st = artChars[kj].style;
+        st.backgroundImage = grad;
+        st.backgroundSize = gw.toFixed(1) + 'px ' + gh.toFixed(1) + 'px';
+        st.backgroundPosition = (gx - (r3.left - pr2.left)).toFixed(1) + 'px ' + (gy - (r3.top - pr2.top)).toFixed(1) + 'px';
+        st.backgroundRepeat = 'no-repeat';
+        st.webkitBackgroundClip = 'text'; st.backgroundClip = 'text';
+        st.webkitTextFillColor = 'transparent'; st.color = 'transparent';
       }
     }
     var lit = T > 0.5;
